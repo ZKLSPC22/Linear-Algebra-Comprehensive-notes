@@ -1,0 +1,1508 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage[margin=2cm]{geometry}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{tikz}
+\title{Analysis Comprehensive Notes}
+\author{Zhikun Li}
+\date{}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\ucov}{\rightrightarrows}
+\newcommand{\mdec}{\searrow}
+\newcommand{\minc}{\nearrow}
+\newcommand{\infsum}{\sum\limits_{n=1}^\infty}
+\newcommand{\sumkn}{\sum_{k=1}^n}
+\newcommand{\infprod}{\prod\limits_{n=1}^\infty}
+\newcommand{\limninf}{\lim\limits_{n\to\infty}}
+\newcommand{\limxinf}{\lim\limits_{x\to\infty}}
+\newcommand{\limxx}{\lim_{x\to x_0}}
+\newcommand{\difx}{\dfrac{\mbox{d}}{\mbox{d}x}}
+\newcommand{\dift}{\dfrac{\mbox{d}}{\mbox{d}t}}
+\newcommand{\st}{\mbox{ s.t. }}
+\newcommand{\qed}{\mbox{Q.E.D}}
+\newcommand{\he}{\mbox{ and }}
+\newcommand{\theorem}{\textbf{Theorem:}}
+\newcommand{\clear}{\mbox{ clearly: }}
+\newcommand{\trivial}{\mbox{Trivially: }}
+\newcommand{\wlop}{\mbox{ WLOP, let }}
+\newcommand{\diam}{\mbox{diam}}
+\newcommand{\0}{{\bf{0}}}
+\newcommand{\spa}{\mbox{span}}
+\begin{document}
+\maketitle
+\section*{Writer's Preface}
+Notes are for revision, to remind yourself of knowledge that are hidden in the corner of your brain about to be forgotten. Reading through a set of well structured, Comprehensive notes, the reader should be able to recall all that he had learned. With this idea in mind, the following book of notes has two purposes:
+\begin{enumerate}
+    \item To allow students studying Linear Algebra quickly refresh their memories of the topic.
+    \item To act as a Dictionary for concepts and proofs.
+\end{enumerate}
+Thus, the notes are going to be: 
+\begin{itemize}
+    \item Concise, prior understanding is assumed
+    \item Rigorous, complementing rigor lacking textbooks and lecture notes
+    \item Comprehensive, to better act as a dictionary
+\end{itemize} .\\
+The following notes are based off of Dr Sheldon Axler's "Linear Algebra Done Right", as well as courses M1, M2, and A0 by the University of Oxford. Deviations from the above material includes:
+\begin{enumerate}
+    \item Re-writing content in symbolic, logical language.
+    \item Removal of most explanations, examples, and exercises
+    \item Leaving simple proofs as exercises.
+    \item Including results found derived in exercises or found on the internet.
+\end{enumerate}
+I wish all readers a thorough understanding of Linear Algebra and Mathematics beyond.
+\tableofcontents
+\clearpage
+\section{Vector Spaces}
+\subsection{$\mathbb{R}^n$ and $\mathbb{C}^n$}
+The construction of Real Numbers has been carefully gone through in the notes for Real Analysis, its construction is simple and clean. However, the construction of Complex number field reveals a few more interesting properties.\\
+Recall the positive set $\mathbb{P}$ is defined as a subset of the Real number set satisfying all three following rules:
+\begin{itemize}
+    \item if $a,b\in\mathbb{P}$ then $a+b\in\mathbb{P}$
+    \item if $a,b\in\mathbb{P}$ then $ab\in\mathbb{P}$
+    \item One and only one of the following is true: $a\in\mathbb{P},a=0,-a\in\mathbb{P}$
+\end{itemize}
+However, such a neat definition can not be found for the "positive" imaginary numbers of the form $ki$ where $k\in\mathbb{P}$, this is because $i$ and $-i$ are mathematically speaking, symmetrical. Try substituting $j=-i$ in to a existing complex system, everything stays the same.
+Thus, $i$ is arbitrary concept for which $i^2=-1$, when we have this definition, we can then define $\sqrt{-1}=i$\\
+Despite the more complicated arithmetic, the Complex system might no note so complex, as Linear Algebra is about to shows us.
+$$$$
+{\textbf{Properties of Complex Arithmetic}}
+\begin{itemize}
+    \item $\forall\alpha,\beta\in\mathbb{C}:\alpha+\beta=\beta+\alpha$ and $\alpha\beta=\beta\alpha$ \null\hfill{\textbf{commutativity}}
+    \item $\forall\alpha,\beta,\gamma\in\mathbb{C}:(\alpha+\beta)+\gamma=\alpha+(\beta+\gamma)$\null\hfill{\textbf{associativity}}
+    \item $\exists0,1\in\mathbb{C}$ s.t. $\forall\gamma\in\mathbb{C}:\gamma+0=\gamma$ and $\gamma1=\gamma$\null\hfill{\textbf{identities}}
+    \item $\forall\alpha\in\mathbb{C}:\exists!\beta\in\mathbb{C}$ s.t. $\alpha+\beta=0$\null\hfill{\textbf{additive inverse}}
+    \item $\forall\alpha\in\mathbb{C}:\exists!\beta\in\mathbb{C}$ s.t. $\alpha\beta=1$\null\hfill{\textbf{multiplicative inverse}}
+    \item $\forall\alpha,\beta,\gamma\in\mathbb{C}:\gamma(\alpha+\beta)=\gamma\alpha+\gamma\beta$\null\hfill{\textbf{distributive property}}
+\end{itemize}
+$$$$
+{\textbf{Definitions}}
+\begin{itemize}
+    \item $-\gamma:=$ the unique number in $\mathbb{C}$ s.t. $\gamma+(-\gamma)=0$, $\alpha-\beta:=\alpha+(-\beta)$\null\hfill{\textbf{subtraction}}
+    \item $\frac{1}{\gamma}:=$ the unique number in $\mathbb{C}$ s.t. $\gamma(\frac{1}{\gamma})=1$, $\frac{\alpha}{\beta}:=\alpha(\frac{1}{\beta})$\null\hfill{\textbf{division}}
+\end{itemize}
+$$$$
+{\textbf{Number Fields}}
+If a subset of $\mathbb{F}$ satisfies:
+\begin{itemize}
+    \item $1\in\mathbb{F}$
+    \item $a,b\in\mathbb{F}\implies{}a\pm{}b\in\mathbb{F}$ (allowing $a=b$)
+    \item $a,b\in\mathbb{F}\symbol{92}\{0\}\implies\dfrac{a}{b}\in\mathbb{F}$ (allowing $a=b$)
+\end{itemize}
+{\textbf{Proposition:}} the rational set(field) is a subset(subfield) to all fields. As it can be constructed out of the definitions, if a set does not contain the rational set, then it does not satisfy the definition, thus is not a field.
+$$$$
+{\textbf{List, Length}}
+A list is an ordered set of elements, and its length is the cardinality of the set. $(x_1,\dots,x_n)$
+$$$$
+$\mathbb{F}^n$ is a Cartesian Product Set, it is the short hand for $\underbrace{\mathbb{F}\times{}\dots\times\mathbb{F}}_{n\mbox{ times}}$\\
+{\textbf{Definitions around $\mathbb{F}^n$}}
+\begin{itemize}
+    \item $(x_1,\dots,x_n)+(y_1,\dots,y_n)=(x_1+y_1,\dots,x_n+y_n)$, commutativity is clearly stands \null\hfill{\textbf{ addition}}
+    \item $0:=\underbrace{(0,\dots,0)}_{n\mbox{ times}}$ \null\hfill{\textbf{additive identity}}
+    \item $\forall{}x=(x_1,\dots,x_n)\in\mathbb{F}^n,\exists{}-x=(-x_1,\dots,-x_n):x+(-x)=0$ \null\hfill{\textbf{additive inverse}}
+    \item $\forall{}\lambda\in\mathbb{F},x=(x_1,\dots,x_n)\in\mathbb{F}^n,\lambda{}x=(\lambda{}x_1,\dots,\lambda{}x_n)$ \null\hfill{\textbf{scalar multiplication}}
+\end{itemize}
+\subsection{Definition of Vector Spaces}
+{\textbf{A Vector Space V satisfies:}}
+\begin{itemize}
+    \item $\forall{}u,v\in{}V,$ define function $f(u,v):=u+v\in{}V$\null\hfill{\textbf{addition}}
+    \item $\forall{}u\in{}V,\lambda\in\mathbb{F}:\lambda{}v\in{}V$\null\hfill{\textbf{multiplication}}
+    \item $\forall{}u,v\in{}V:u+v=v+u$\null\hfill{\textbf{commutativity}}
+    \item $\forall{}a,b\in\mathbb{F},u,v,w\in{}V:(u+v)+w=u+(v+w)$ and $(ab)v=a(bv)$\null\hfill{\textbf{associativity}}
+    \item $\exists0,\in{}V$ s.t. $\forall{}u\in{}V:u+0=u$\null\hfill{\textbf{identities}}
+    \item $\forall{}u\in{}V:\exists!v\in{}V$ s.t. $u+v=0$\null\hfill{\textbf{additive inverse}}
+    \item $\forall{}u\in{}V:1u=u$\null\hfill{\textbf{multiplicative identity}}
+    \item $\forall{}u,v\in{}V,\lambda\in\mathbb{F}:\lambda(u+v)=\lambda{}u+\lambda{}v$\null\hfill{\textbf{distributive property}}
+\end{itemize}
+{\textbf{Definitions}}
+\begin{itemize}
+    \item Vectors are elements of a vector space or a directional mapping between elements of sets (elements are unambiguous logical objects)
+    \item Under the first definition, then a vector is the same thing as a point, Under the second definition, a point is the element that a vector maps from or to
+\end{itemize}
+{\textbf{$\mathbb{F}^S$}}
+\begin{itemize}
+    \item let S be a set, then $\mathbb{F}^S$ is the set of functions from $S$ to $\mathbb{F}$
+    \item $(f+g)(x):=f(x)+g(x)$
+    \item $(\lambda f)x:=\lambda{}f(x)$
+    \item $\forall{}x\in\mathbb{F},f,g\in\mathbb{F}^S\implies{}f+g\in\mathbb{F}^S$
+    \item $\forall{}\lambda\in\mathbb{F},f\in\mathbb{F}^S\implies{}\lambda{}f\in\mathbb{F}^S$
+\end{itemize}
+Clearly, $\mathbb{F}^S$ is a vector space
+
+{\textbf{$\mathbb{F}^n$ and $\mathbb{F}^{\infty}$ are cases of $\mathbb{F}^S:$ }}\\
+$\mathbb{F}^n$ can be seen as $F^{\{1,\dots,n\}}$, thus each list can be seen as a function from $\{1,\dots,n\}$ to $\mathbb{F}$, e.g. $(2i,5)$ is a function where $f(1) = 2i$ and $f(2) = 5$
+
+{\textbf{The additive identity is unique:}} suppose 0 and 0' are both additive identities, $\implies0'=0'+0=0+0'=0$
+
+{\textbf{The additive inverse is unique:}} let $u,v,v'\in{}V$, suppose that $v$ and $v'$ are both additive inverses of u $\implies{}v=v+0=v+(u+v')=(v+u)+v'=(u+v)+v'=0+v'=v'$\\
+{\textbf{Definitions}}
+\begin{itemize}
+    \item $-v$ denotes the additive inverse of $v$
+    \item $w-v$ denotes $w+(-v)$
+\end{itemize}
+$\forall{}v\in{}V:0v=0$, {\textbf{Proof:}} $\forall{}v\in{}V,0v=(0+0)v=0v+0v\implies0v=0$\null\hfill{here, $0\in\mathbb{F}$}\\
+$\forall{}a\in{}\mathbb{F}:a0=0$, {\textbf{Proof:}} $\forall{}a\in{}\mathbb{F},a0=a(0+0)=a0+a0\implies{}a0=0$\null\hfill{here, $0\in{}V$}\\
+$\forall{}v\in{}V:(-1)v=-v$, {\textbf{Proof:}} $\forall{}v\in{}V,v+(-1)v=(1)v+(-1)v=(1+(-1))v=0v=0$
+\subsection{Subspaces}
+{\textbf{Conditions for a subspace}}\\
+If $U$ is a subspace of $V$ then:
+\begin{itemize}
+    \item $0\in{}U$\null\hfill{\textbf{additive identity}}
+    \item $\forall{}u,v\in{}U:u+v\in{}U$\null\hfill{\textbf{closed under addition}}
+    \item $\forall{}a\in\mathbb{F},u\in{}U:au\in{}U$\null\hfill{\textbf{closed under multiplication}}
+\end{itemize}
+{\textbf{Sum of Subsets}}
+$$\forall{}U_1,\dots,U_m\subset{}V:U_1+\dots+U_m=\{u_1+\dots+u_m|u_1\in{}U_1,\dots,u_m\in{}U_m\}$$
+It is easy to show that the sum of subspaces is the smallest containing subspace\\
+\textbf{Direct sum}
+$$\forall v\in U_1+\dots+U_m,\exists!\{u_1,\dots,u_m\}\mbox{ s.t. }u_1+\dots+u_m=v\implies\mbox{}U_1+\dots+U_m=U_1\oplus\dots\oplus{}U_m\mbox{ is a direct sum}$$
+{\textbf{Conditions for a Direct sum}}\\
+Direct Sum $\iff$ no non-$0$ combination of vectors gives $0$ (clearly)
+$$U+V\mbox{ is direct sum}\iff{}U\cap{}V=\{0\}\quad\mbox
+{(clearly)}$$
+\clearpage
+\section{Finite Dimensional Vector Spaces}
+\subsection{Span and Linear Independence}
+\textbf{Definition: Linear Combination}\\
+A linear combination of $v_1,v_2,\dots,v_m$ is any $a_1v_1+a_2v_2+\dots+a_nv_n\st a_1,a_2,\dots,a_n\in\mathbb{F}$\\
+\textbf{Definition: Span}
+$$\spa(v_1,\dots,v_m)=\{a_1v_1,\dots,a_mv_m\mid a_1,\dots,a_m\in\F\}$$
+\textbf{Theorem: Span is the smallest containing subspace}\\
+\null\hfill{Prove as an exercise}\\
+\textbf{Definition: Finite Dimensional Vector Spaces}\\
+A vector space is finite dimensional if and only if a finite list of vectors in it spans it\\
+\textbf{Definition: Polynomials}
+$$\mathcal{P}(\F):=\{p\mid p(z)=a_0+a_1z+\dots+a_mz^m\st m\in\N,\land z_1,\dots,z_m\in\F\}$$
+\textbf{Definition: Degree of a polynomial}
+$$\forall p\st p(z)=a_0+a_1z+\dots+a_mz^m\,(a_m\neq0),\mbox{ the degree of }p\mbox{ is }m$$
+$$v_1,\dots,v_m\mbox{ is linearly independent}:=(a_1v_1+\dots+a_mv_m=0\iff a_1=\dots=a_m=0)$$
+\textbf{The Linear Dependence Lemma:}
+$$v_1,\dots,v_m\mbox{ is linaerly dependent}\iff\exists v_j\,(j\in\{1,\dots,m\})\st v_j\in\spa(v_1,\dots,v_m)$$
+\textbf{Proof:}\
+$$\mbox{Linear dependence}\implies\exists  a_{j_1},\dots,a_{j_k}\neq0\st a_{j_1}v_{j_1}+\dots+a_{j_k}v_{j_k}=0\implies v_{j_k}=-\frac{a_{j_1}}{a_{j_k}}v_{j_1}-\dots-\frac{a_{j_{k-1}}}{a_{j_k}}v_{j_{k-1}}$$
+$$\iff v_{j_k}\in\spa(a_{j_1},\dots,a_{j_k})\subset\spa(a_1,\dots,a_{j_k-1})\quad\mbox{(the other direction is trivial)}$$
+\textbf{Theorem: Length of Independent List $\le$ Length of Spanning list}\\
+\textbf{Proof:}\\
+Assume $v_1,\dots,v_m$ to be a independent, $w_1,\dots,w_n$ to be spanning $\st m>n$\\
+Create list $w_1,\dots,w_n,v_1\implies\exists w_{j_1},\dots,w_{j_k}\st a_1w_{j_1}+\dots+a_kw_{j_k}=v_1\iff w_{j_1}=\dfrac{1}{a_1}v_1-(\dfrac{a_2}{a_1}w_{j_2}+\dots+\dfrac{a_k}{a_1}w_{j_k})$\\
+Thus, $w_1,\dots,w_{j_k-1},w_{j_k+1},\dots,w_n,v_1$ is also a spanning list
+Like wise, we create a list adding $v_2$ and removing another $w$, (this can be done as the $v$s are independent, thus all combinations must contain at least one $w$)
+At the end, we have the spanning list: $v_1,\dots,v_n$, which is a contradiction to the independence of $v_1,\dots,v_n,\dots,v_m$\\
+\textbf{Theorem: Subspaces of a Finite-Dimensional Space are Finite-Dimensional}\\
+\textbf{Proof:}
+Let $V$ be finite-dimensional and $U$ is a infinite-dimensional subspace of $V$, then:
+\begin{itemize}
+    \item \textbf{Step 1:} If $U=\{\0\}$, then $\qed$, otherwise, choose $v_1\in U$\
+    \item \textbf{Step j:} If $U=\spa(v_1,\dots,v_{j-1})$, then $\qed$, otherwise, choose $v_j\in U\st v_j\notin\spa(v_1,\dots,v_{j-1})$
+\end{itemize}
+This process eventually creates an independent list longer than any any given spanning list, thus causing contradiction\quad$\square$
+\subsection{Bases}
+\textbf{Definition: Basis} - An independent spanning List\\
+\textbf{Theorem: Criterion for Basis}
+Any vector in a space can be expressed uniquely with some linear combination of any of the space's basis\\
+\null\hfill{Prove as an exercise}\\
+\textbf{Theorem: Any Spanning List Contains a Basis}\\
+\null\hfill{Prove as an exercise}\\
+\textbf{Inference: Any Finite-Dimensional Vector Space Has a Basis}\quad(Clearly)\\
+\textbf{Inference: Any Independent List Extends to a Basis}\\
+\textbf{Proof:}
+Create a list with the independent list and any basis, then reduce new list.\quad(Prove with rigor as an exercise)
+\textbf{Inference: Every Subspace of $V$ has a direct sum equal to $V$}\\
+\null\hfill{Prove as an exercise}
+\subsection{Dimension}
+\textbf{Theorem: All bases have the same length}\\
+\textbf{Prove:} Any two bases are both spanning and independent, thus their lengths have to be smaller or equal to each other.\\
+\textbf{Definition: Dimension}\\
+dim$V:=$ the length of any basis of $V$\\
+\textbf{Inference: Dimension of subspaces are smaller or equal to the Dimension of the Space}\\
+\null\hfill{Prove as an exercise}\\
+\textbf{Inference: Any Independent List of the Right Length is a Basis}\\
+\textbf{Proof:}\\
+Any independent list extends to a basis, thus clearly\\
+\textbf{Inference: Any Spanning List of the Right Length is a Basis}\\
+\textbf{Proof:}\\
+Any spanning list reduces to a basis, thus clearly\\
+\textbf{Theorem:}
+$$\mbox{dim}(U_1+U_2)=\mbox{dim}U_1+\mbox{dim}U_2-\mbox{dim}(U_1\cap U_2)$$
+\textbf{Proof:}\\
+Let $u_1,\dots,u_m$ be a basis of $U_1\cap U_2$, extend it to $u_1,\dots,u_m,v_1,\dots,v_j$ to form a basis of $U_1$, $u_1,\dots,u_m,w_1,\dots,w_k$ to form a basis of $U_2$. Clearly, $u_1,\dots,u_m,v_1,\dots,v_j,w_1,\dots,w_k$ is spanning. (Prove the independence of this list as an exercise) Thus, this is a basis of $U_1+U_2$ (think about why this is equivalent to the proposition)
+\clearpage
+\section{Linear Maps}
+\subsection{The Vector Space of Linear Maps}
+\subsubsection{Definitions}
+$T:V\to W\st$
+\begin{equation}
+\begin{split}
+    \mbox{\textbf{Additive: }}\,&\forall u,v\in V:T(u+v)=Tu+Tv\\
+    \mbox{\textbf{Homogeneity: }}\,&\forall\lambda\in\F,\forall v\in V:T(\lambda v)=\lambda T(v)
+\end{split}
+\end{equation}
+$\mathcal{L}(V,W):=\{T:V\to W\mid T\mbox{ is a linear map}\}$\\
+$\0:=T\in\mathcal{L}(V,W)\st\forall v\in V:Tv=0$\\
+$I:=T\in\mathcal{L}(V,V)\st\forall v\in V:Tv=v$\\
+$\mbox{\textbf{Differentiation: }}D:=T\in\mathcal{L}(\mathcal{P}(\R),\mathcal{P}(\R))\st Dp=p'$\\
+$\mbox{\textbf{Integration: }int}:=T\in\mathcal{L}(\mathcal{P}(\R),\R)\st Tp=\displaystyle\int_a^bp(x)dx$\\
+\textbf{Theorem:}\\
+Suppose $v_1,\dots,v_n$ is a basis of $V$ and $w_1,\dots,w_n\in W\implies\exists!T:V\to W\st\forall j=1,\dots,n:Tv_j=w_j$
+\subsubsection{Algebraic Operations on $\mathcal{L}(V,W)$}
+\textbf{Definition:}
+$$\forall S,T\in\mathcal{L}(V,W),\forall\lambda\in\F:$$
+$$(S+T)(v)=Sv+Tv,\quad (\lambda T)(v)=\lambda(Tv)$$
+\textbf{Inference: }$\mathcal{L}(V,W)$ is a vector space\\
+\null\hfill{Prove as an exercise}\\
+\textbf{Definition: Product of Linear Maps}
+$$T\in\mathcal{L}(U,V),S\in\mathcal{L}(V,W),S\circ T:=ST\in\mathcal{L}(U,W)\st\forall u\in U:(ST)(u)=S(Tu)$$
+\textbf{Properties:}
+\begin{equation}
+\begin{split}
+    \mbox{\textbf{Associativity: }}\,&(T_1T_2)T_3=T_1(T_2T_3)\\
+    \mbox{\textbf{Identity: }}\,&TI=IT\\
+    \mbox{\textbf{Distributivity: }}\,&(S_1+S_2)T=S_1T+S_2T\\
+    &S(T_1+T_2)=ST_1+ST_2
+\end{split}
+\end{equation}
+\textbf{Inference:} Linear maps map 0 to 0\\
+\textbf{Proof:}
+$$T(0)=T(0+0)=T(0)+T(0)\quad\mbox{(Then clearly)}$$
+\subsection{Null Spaces and Ranges}
+\subsubsection{Null Spaces and Injections}
+\textbf{Definition: Null Space}
+$$T\in\mathcal{L}(V,W),\mbox{null}T:=\{v\in V\mid Tv=0\}$$
+\textbf{Inference:} The null space is a subspace\\
+\null\hfill{Prove as an exercise}\\
+\textbf{Definition: Injection}
+$$T:V\to W,T\mbox{ is an injection}:=(Tu=Tv\implies u=v)$$
+\textbf{Inference:} Injectivity$\iff$Null space $=\{0\}$
+\null\hfill{Prove as an exercise}
+\subsubsection{Range and Surjections}
+\textbf{Definition: Range}
+$$T\in\mathcal{L}(V,W),\,\mbox{range}T:=\{Tv\mid v\in V\}$$
+\textbf{Inference:} The range is a subspace\\
+\null\hfill{Prove as an exercise}\\
+\textbf{Definition: Surjection}
+$$T:V\to W,T\mbox{ is an surjection}:=\mbox{range}T=W$$
+\subsubsection{Fundamental Theorem of Linear Maps}
+\textbf{Fundamental Theorem of Linear Maps:}\\
+Suppose $V$ is finite-dimensional and $T\in\mathcal{L}(V,W)$. Then range$T$ is finite-dimensional and:
+$$\mbox{dim}V=\mbox{dim null}T+\mbox{dim range}T$$
+\null\hfill{Prove as an exercise}\\
+\textbf{Inference:} A map into a smaller dimensional space is not injective\\
+\null\hfill{Prove as an exercise}\\
+\textbf{Inference:} A map into a larger dimensional space is not surjective\\
+\null\hfill{Prove as an exercise}\\
+\textbf{Homogeneous systems of linear equations}
+$$m,n\in\N^+,A_{jk}\in\F\,(j=1,\dots,m,\,k=1,\dots,n)$$
+\begin{equation}
+\begin{split}
+    \sum_{k=1}^nA_{1k}x_k&=0\\
+    \dots&\\
+    \sum_{k=1}^nA_{mk}x_k&=0
+\end{split}
+\end{equation}
+$$T:\F^n\to\F^m,(x_1,\dots,x_n)\mapsto\left(\sum_{k=1}^nA_{1k}x_k,\dots,\sum_{k=1}^nA_{mk}x_k\right)$$
+\textbf{Inference:} A homogeneous system of linear equations with more variables than equations has non-zero solutions\\
+\textbf{Proof:}
+$$n>m\implies\mbox{null}T\neq\0$$
+\textbf{Inhomogeneous systems of linear equations}
+$$m,n\in\N^+,A_{jk}\in\F\,(j=1,\dots,m,\,k=1,\dots,n)$$
+\begin{equation}
+\begin{split}
+    \sum_{k=1}^nA_{1k}x_k&=c_1\\
+    \dots&\\
+    \sum_{k=1}^nA_{mk}x_k&=c_m
+\end{split}
+\end{equation}
+$$T:\F^n\to\F^m,(x_1,\dots,x_n)\mapsto\left(\sum_{k=1}^nA_{1k}x_k,\dots,\sum_{k=1}^nA_{mk}x_k\right)$$
+\textbf{Inference:} An inhomogeneous system of linear equations with less variables than equations has no solution for some choice of $c$s\\
+\textbf{Proof:}
+$$n<m\implies\mbox{dim range}T\le n<m$$
+\subsection{Systems of Linear Equations}
+\textbf{Definition: Linear Systems} are sets of simultaneous equations in in the form:
+$$\begin{matrix}
+    a_{11}x_1&+&\cdots&+&a_{1n}x_n&=&b_1\\
+    \vdots&&&&\vdots&&\vdots\\
+    a_{m1}x_1&+&\cdots&+&a_{mn}x_n&=&b_m
+\end{matrix}$$
+Where $a_{jk},b_r\in\F$\\
+\textbf{Definition:}\\
+Any vector $(x_1,\dots,x_n)$ which satisfies the system of equations is a \textbf{solution}, if the linear system has solutions, then it is \textbf{consistent}.\\
+\textbf{Definition: Augmented Matrix}
+$$\left(\begin{array}{ccc|c}
+    a_{11}&\cdots&a_{1n}&b_1\\
+    \vdots&&\vdots&\vdots\\
+    a_{m1}&\cdots&a_{mn}&b_m
+\end{array}\right)$$
+\textbf{Definition: Elementary Row Operation (ERO)}
+\begin{enumerate}
+    \item Swapping the position of two rows
+    \item Multiplying an equation by a non-0 constant
+    \item Adding the scalar multiple of one row to the other
+\end{enumerate}
+Using ERO, we can carry out Gaucian elimination (Omitted here)
+\subsection{Matrices}
+\subsubsection{Representing a Linear Map by a Matrix}
+\textbf{Definition:}
+$$v_1,\dots,v_n\mbox{ is a basis of }V,\,w_1,\dots,w_m\mbox{ is a basis of }W,\,T\in\mathcal{L}(V,W)\st Tv_{j}=(A_{1j}w_1,\dots,A_{mj}w_m)$$
+$$\mathcal{M}(T,(v_1,\dots,v_n),(w_1,\dots,w_m)):=\begin{pmatrix}
+    A_{11}&\dots&A_{1n}\\
+    \dots&&\dots\\
+    A_{m1}&\dots&A_{mn}
+\end{pmatrix}$$
+\textbf{Hint:} Compare the transform to its matrix with respect to each vector in the basis of $V$
+\subsubsection{Addition and Scalar Multiplication of Matrices}
+\textbf{Notation}
+$$\F^{m,n}:=\{M\mid M\mbox{ is a $m$ by $n$ matrix}\}$$
+\textbf{Definition: Addition}
+$$\forall A,C\in\F^{m,n}\st A=\begin{pmatrix}
+    A_{11}&\dots&A_{1n}\\
+    \dots&&\dots\\
+    A_{m1}&\dots&A_{mn}
+\end{pmatrix},\,C=\begin{pmatrix}
+    C_{11}&\dots&C_{1n}\\
+    \dots&&\dots\\
+    C_{m1}&\dots&C_{mn}
+\end{pmatrix}$$
+$$A+C:=\begin{pmatrix}
+    A_{11}+C_{11}&\dots&A_{1n}+C_{1n}\\
+    \dots&&\dots\\
+    A_{m1}+C_{m1}&\dots&A_{mn}+C_{mn}
+\end{pmatrix}\mbox{ or }(A+C)_{jk}=A_{jk}+C_{jk}$$
+\textbf{Definition: Scalar Multiplication}
+$$\forall A\in\F^{m,n}\st A=\begin{pmatrix}
+    A_{11}&\dots&A_{1n}\\
+    \dots&&\dots\\
+    A_{m1}&\dots&A_{mn}
+\end{pmatrix},\,\lambda A:=\begin{pmatrix}
+    \lambda A_{11}&\dots&\lambda A_{1n}\\
+    \dots&&\dots\\
+    \lambda A_{m1}&\dots&\lambda A_{mn}
+\end{pmatrix}\mbox{ or }(\lambda A)_{jk}=\lambda(A_{jk})$$
+\textbf{Theorem:} $\mbox{dim}\F^{m,n}=mn$\\
+\null\hfill{Prove as an exercise}
+\subsubsection{Matrix Multiplication}
+$$S\in\mathcal{L}(U,V),T\in\mathcal{L}(V,W),\mathcal{M}(S)\in\F^{m,n},\mathcal{M}(T)\in\F^{n,p}$$
+$$\mathcal{M}(S)=\begin{pmatrix}
+    A_{11}&\dots&A_{1n}\\
+    \dots&&\dots\\
+    A_{m1}&\dots&A_{mn}
+\end{pmatrix},\,\mathcal{M}(T)=\begin{pmatrix}
+    C_{11}&\dots&C_{1p}\\
+    \dots&&\dots\\
+    C_{n1}&\dots&C_{np}
+\end{pmatrix}$$
+$$(ST)u_k=S\left(\sum_{r=1}^n C_{rk}v_r\right)=\sum_{r=1}^n C_{rk}Sv_r=\sum_{r=1}^n C_{rk}\sum_{j=1}^mA_{jr}w_j=\sum_{j=1}^m\sum_{r=1}^nA_{jr}C_{rk}w_j\implies\mathcal{M}(ST)_{jk}=\sum_{r=1}^nA_{jr}C_{rk}$$
+$$A=\begin{pmatrix}
+    A_{11}&\dots&A_{1n}\\
+    \dots&&\dots\\
+    A_{m1}&\dots&A_{mn}
+\end{pmatrix},\,C=\begin{pmatrix}
+    C_{11}&\dots&C_{1p}\\
+    \dots&&\dots\\
+    C_{n1}&\dots&C_{np}
+\end{pmatrix},\,AC:=\begin{pmatrix}
+\displaystyle\sum_{r=1}^nA_{1r}C_{r1}&\dots&\displaystyle\sum_{r=1}^nA_{1r}C_{rp}\\
+\dots&&\dots\\
+\displaystyle\sum_{r=1}^nA_{mr}C_{r1}&\dots&\displaystyle\sum_{r=1}^nA_{mr}C_{rp}
+\end{pmatrix}$$
+\subsection{Invertibility and Isomorphic Vector Spaces}
+\subsubsection{Invertible Linear Maps}
+\textbf{Definition:}
+$$T\in\mathcal{L}(V,W)\mbox{ is invertible}:=\exists S\in\mathcal{L}(W,V)\st TS=I\in\mathcal{L}(V)\land ST=I\in\mathcal{L}(W)$$
+\textbf{Inference: Inverse is unique}\\
+\textbf{Prove:}\\
+Suppose $T\in\mathcal{L}(V,W)$ is invertible, $S_1,S_2$ are inverses of $T\implies S_1=S_1I=S_1(TS_2)=(S_1T)S_2=IS_2=S_2$
+\textbf{Notation: $T^{-1}$ denotes the inverse of $T$}\\
+\textbf{Inference:} Invertibility$\iff$Injectivity$\land$Surjectivity\\
+\textbf{Proof:}\\
+Suppose $T\in\mathcal{L}(V,W)$\\
+Invertibility$\implies\forall u,v\in V\st Tu=Tv:u=T^{-1}(Tu)=T^{-1}(Tv)=v$ (Prove surjectivity as an exercise)
+Injectivity$\land$Surjectivity$\implies\forall w\in W,\exists! Sw\in V\st T(Sw)=w,\clear ST=I\in\mathcal{L}(V)$\\
+$T(ST)v=(TS)Tv=I(Tv)=Tv\implies ST=I\in\mathcal{L}(W)$, linearity is trivial\quad$\square$
+\subsubsection{Isomorphic Vector Spaces}
+\textbf{Definition: Isomorphism} An invertible linear map\\
+\textbf{Definition: Isomorphic Vector Spaces} Vector spaces between which an isomorphism exists
+\textbf{Inference:} Two spaces are isophormic$\iff$they are of the same dimension\\
+\textbf{Proof:}
+$$\mbox{Suppose: }V\in\F^n,W\in\F^m,T\mbox{ is an isomorphism between $V$ and $W$}\implies$$
+$$\mbox{dim}V=\mbox{dim null}T+\mbox{dim range}T=0+\mbox{dim}V$$
+\null\hfill{Prove the other direction as an exercise}\\
+\textbf{Inference: }$\mbox{dim}\F^{m,n}=\mbox{dim}\mathcal{L}(V,W)=(\mbox{dim}V)(\mbox{dim}W)$
+\subsubsection{Linear Maps Thought as Matrix Multiplication}
+Vector as a matrix (Linear transform)\\
+Suppose $v_1,\dots,v_n$ is a basis of $V$, then $\forall v\in V:v=c_1v_1,\dots,c_nv_n\st c_1,\dots,c_n\in\F$, we can define is as:
+$$v\in\mathcal{L}(\R,V),1\mapsto c_1v_1,\dots,c_nv_n,\quad\mbox{Trivially: }M(v)=\begin{pmatrix}
+    c_1\\
+    \vdots\\
+    c_n
+\end{pmatrix}$$
+\textbf{Inference: }$\mathcal{M}(T)_{\cdot k}=\mathcal{M}(Tv_k)_\cdot$\quad(Clearly)\\
+Thus, linear maps and matrix multiplications (considering the change in basis) are equivalent
+\subsubsection{Operators}
+\textbf{Definition: Operator} Maps from a vector space to itself\\
+\textbf{Inference:} Injectivity$\iff$Surjectivity$\iff$Invertibility\\
+\textbf{Proof:}\\
+Injectivity$\implies$ dim null$T=0\implies$dim range$T=$dim range$T+$dim null$T=$dim $V\iff$ Surjectivity\\
+Surjectivity$\implies$ range$T=V\implies$dim null$T=$dim $V-$dim range$T=0\iff$ Injectivity\\
+Equivalence to invertibility is trivial
+\subsection{Reduced Row Echelon Form}
+\subsubsection{Elementary Matrices}
+EROs can be represented as Matrices\\
+In the language of Linear maps, suppose $T\in\mathcal{L}(V,W),\mbox{dim}V=n,\mbox{dim}W=m$, then\\
+\textbf{Swapping}
+$$\begin{matrix}
+    Tv_1&\cdots&Tv_n&&S_{JK}(Tv_1)&\cdots&S_{JK}(Tv_n)\\
+    =&&=&&=&&=\\
+    a_{11}w_1&\cdots&a_{1n}w_1&&a_{11}w_1&\cdots&a_{1n}w_1\\
+    +&&+&&+&&+\\
+    \vdots&&\vdots&&\vdots&&\vdots\\
+    +&&+&&+&&+\\
+    a_{J1}w_J&\cdots&a_{Jn}w_J&&a_{K1}w_J&\cdots&a_{Kn}w_J\\
+    +&&+&&+&&+\\
+    \vdots&&\vdots&&\vdots&&\vdots\\
+    +&&+&&+&&+\\
+    a_{K1}w_K&\dots&a_{Kn}w_K&&a_{J1}w_K&\dots&a_{Jn}w_K\\
+    +&&+&&+&&+\\
+    \vdots&&\vdots&&\vdots&&\vdots\\
+    +&&+&&+&&+\\
+    a_{m1}w_m&\dots&a_{mn}w_n&&a_{m1}w_m&\dots&a_{mn}w_n\\
+\end{matrix}\implies S_{JK}(w_j)=\begin{cases}
+    w_j&j\neq J,K\\
+    w_K&j=J\\
+    w_J&j=K
+\end{cases}$$
+$$\implies\mathcal{M}(S_{JK})_{jk}=\begin{cases}
+    1&j=k\neq J,K\\
+    1&j=K,k=J\\
+    1&j=J,k=K\\
+    0&\mbox{otherwise}
+\end{cases}$$
+\textbf{Scalar Multiplication} (Trivially)
+$$\mathcal{M}(M_J(\lambda))=\begin{cases}
+    1&j=k\neq J\\
+    \lambda&j=k=J\\
+    0&\mbox{otherwise}
+\end{cases}$$
+\textbf{Addition}
+$$\begin{matrix}
+    Tv_1&\cdots&Tv_n&&S_{JK}(Tv_1)&\cdots&S_{JK}(Tv_n)\\
+    =&&=&&=&&=\\
+    a_{11}w_1&\cdots&a_{1n}w_1&&a_{11}w_1&\cdots&a_{1n}w_1\\
+    +&&+&&+&&+\\
+    \vdots&&\vdots&&\vdots&&\vdots\\
+    +&&+&&+&&+\\
+    a_{K1}w_K&\dots&a_{Kn}w_K&&(\lambda a_{J1}+a_{K1})w_K&\dots&(\lambda a_{Jn}+a_{Kn})w_K\\
+    +&&+&&+&&+\\
+    \vdots&&\vdots&&\vdots&&\vdots\\
+    +&&+&&+&&+\\
+    a_{m1}w_m&\dots&a_{mn}w_n&&a_{m1}w_m&\dots&a_{mn}w_n\\
+\end{matrix}\implies A_{JK}(w_j)=\begin{cases}
+    w_J+\lambda w_K&j=J\\
+    w_j&j\neq J
+\end{cases}$$
+$$\implies\mathcal{M}(A_{JK}(\lambda))_{jk}=\begin{cases}
+    1&j=k\\
+    \lambda&j=K,k=J\\
+    0&\mbox{otherwise}
+\end{cases}$$
+\textbf{Definition: Elementary Operator} The above three operators applied in any order.\\
+\textbf{Corollary:} Invariance of solution space under EROs\\
+Let $(A|b)$ be a linear system of $m$ equations and $E$ be an elementary operator. Then 
+$$x\mbox{ is a solution of }(A|b)\iff x\mbox{ is a solution of }((\mathcal{M}(E))(A)|(\mathcal{M}(E))(b))$$
+\textbf{Proof:}
+$$E\mbox{ is invertible}\iff\mbox{M}(E)\mbox{ is invertible}\implies (Ax=b\iff(\mathcal{M}(E))(Ax)=(\mathcal{M}(E))(b))$$
+\subsubsection{Reduced Row Echelon Form}
+\textbf{Definition: Reduced Echelon Form (RRE form)}\\
+Any matrix such that:
+\begin{enumerate}
+    \item all non-0 rows has 1 as its first entry
+    \item the first entries of any non-0 row appears on the right of the first entry of any row above it
+    \item if any column contains a first entry 1, then all other entries in the column are 0
+    \item any 0 rows appear below all non-0 rows
+\end{enumerate}
+\textbf{Definition: Row Reduction} is the application of EROs to arrive at the RRE form\\
+\textbf{Theorem:} Existance of RRE:\\
+\null\hfill{Prove as an exercise with induction}
+\subsubsection{Determining Invertibility of Matrices}
+\textbf{Algorithm:}\\
+Let $A$ be an $n\times n$ matrix, then apply EROs to $(A|I_n)$ till $A$ is recued to RRE form: $(R|P)$.
+\begin{itemize}
+    \item $R=I_n$ then $A$ is invertible and $P=A^{-1}$
+    \item $R\neq I_n$ then $A$ is \textit{\textbf{singular}}
+\end{itemize}
+\textbf{Proof:}\\
+In the first case, $\exists $ elementary matrix $E\st MA=I_n\implies M=A^{-1}\implies P=MI_n=M=A^{-1}$\\
+The second case is trivial.
+\subsection{Products and Quotients of Vector Spaces}
+\subsubsection{Products of Vector Spaces}
+\textbf{Definition:} Product of vector spaces\\
+Suppose $V_1,\dots,V_m$ are vectors spaces over $\F$, then:
+$$V_1\times\dots\times V_m:=\{(v_1,\dots,v_m)\mid v_1\in V_1,\dots,v_m\in V_m\}\st$$
+$$(u_1,\dots,u_m)+(v_1,\dots,v_m)=(u_1+v_1,\dots,u_m+v_m)\land\lambda(v_1,\dots,v_m)=(\lambda v_1,\dots,\lambda v_m)\forall\lambda\in\F$$
+Clearly, the product of vector spaces is a vector space\\
+\textbf{Inference:}
+$$\mbox{dim}(V_1\times\dots\times V_m)=\mbox{dim}V_1+\dots+\mbox{dim}V_m\quad\mbox{(Clearly)}$$
+\subsubsection{Products and Direct Sums}
+\textbf{Definition:}
+$$U_1,\dots U_m\mbox{ are subspaces of }V$$
+$$\Gamma:=T:U_1\times\dots\times U_m\to U_1+\dots+U_m,(u_1,\dots,u_m)\mapsto u_1+\dots+u_m$$
+By definition: $U_1+\dots+U_m$ is a direct sum $\iff\Gamma$ is an injection\\
+\textbf{Inference:} (Clearly) $$\mbox{dim}U_1+\dots+\mbox{dim}U_m=\mbox{dim}(U_1\times\dots\times U_m)=\mbox{dim}(U_1+\dots+U_m)\iff U_1+\dots+U_m\mbox{ is a direct sum}$$
+\subsubsection{Quotients of Vector Spaces}
+\textbf{Definition:} Affine subset\\
+Suppose $v\in V\land U\mbox{ is a subspace of }V$, then $V\supset v+U:=\{v+u\mid u\in U\}$\\
+\textbf{Definition:} parallel (affine subsets with equal dimensions)\\
+Affine subsets of $V:U_1,U_2$ are parallel$\iff\exists v\in V\st U_1+v=U_2$\\
+\textbf{Inference:} parallel affine subsets are either equal or disjoint\\
+\textbf{Proof:}\\
+Clearly, $\forall u\in U:u+U=U$\\
+Suppose $v_1+U,v_2+U_2$ are parallel affine subsets of $V$, is there exists $v_0\st v_0\in v_1+U\land v_0\in v_2+U\implies v_0=v_1+u_1=v_2+u_2\implies v_1=v_2+(u_2-u_1)\implies v_1+U=v_2+U\iff v_1-v_2\in U$\\
+\textbf{Definition: Quotient Space}\\
+Suppose $U$ is a subspace of $V$, then $V/U:=\{v+U\mid v\in V\}$
+$$\forall v+U,w+U\in V/U:(v+U)+(w+U)=(v+w)+U\land\lambda(v+U)=(\lambda v)+U$$
+\textbf{Inference: }Quotient space is a vector space (Clearly)\\
+\textbf{Definition: Quotien Map $\pi$}
+$$\mbox{Suppose $U$ is a subspace of $V$, }\pi_U:=T\in\mathcal{L}(V,V/U),v\mapsto v+U$$
+\textbf{Inference:}
+$$\mbox{dim}V/U=\mbox{dim}V-\mbox{dim}U$$
+\textbf{Proof:}
+$$\mbox{Clearly, null}\pi=U,\mbox{range}\pi=V/U\implies\mbox{dim}V=\mbox{dim}U+\mbox{dim}V/U$$
+\textbf{Definition:} $\tilde{T}$\\
+Suppose $T\in\mathcal{L}(V,W),\tilde{T}:=V/(\mbox{null}T)\to W,\tilde{T}(v+\mbox{null}T)=Tv$\\
+\textbf{Inferences:}
+\begin{itemize}
+    \item $\tilde{T}$ is a linear map
+    \item $\tilde{T}$ is injective
+    \item range$\tilde{T}=\mbox{range}T$
+    \item $\tilde{T}\mbox{ is an isomorphism between }V/(\mbox{null}T)$ and range$T$
+\end{itemize}
+\null\hfill{Prove the above as an exercise}
+\subsection{Duality}
+\subsubsection{The Dual Space and the Dual Map}
+\textbf{Definition: Linear Functional}\\
+A Linear functional on $V$ is any element of \textit{\textbf{Dual Space}} $V':=\mathcal{L}(V,\F)$, clearly: $\mbox{dim}V'=\mbox{dim}V$\\
+\textbf{Definition: Dual basis}\\
+Suppose $v_1,\dots,v_m$ is a basis of $V$, $V'\supset\varphi_1,\dots,\varphi_m:=\varphi_j(v_k)=\begin{cases}
+    1&k=j\\
+    0&k\neq j
+\end{cases}$\\
+\null\hfill{(Prove the dual basis to truly be a basis as an exercise)}\\
+\textbf{Definition: Dual Map} $T'$\\
+If $T\in\mbox{L}(V,W),\varphi\in W'\mbox{, then }T'\in\mathcal{L}(W',V')\st T'=\varphi\circ T$\\
+Dual maps map a linear functional to this same functional applied after a transformation in vector space\\
+\textbf{Example:}\\
+Let $D$ be the differential operator, let $V$ be $\mathcal{P}_n(x)$, hence $W=\mathcal{P}_{n-1}(x)$, $\varphi(p):=\displaystyle\int_0^1p(x)dx\implies$\\ 
+$(D'(\varphi))(p)=(\varphi\circ D)(p)=\displaystyle\int_0^1\dfrac{d}{dx}p(x)dx$\\
+\null\hfill{Prove the dual map to be a linear map as an exercise}\\
+\textbf{Algebraic Properties of the dual map}
+\begin{itemize}
+    \item $\forall S,T\in\mathcal{L}(V,W):(S+T)'=S'+T'$
+    \item $\forall S\in\mathcal{L}(V,W):(\lambda T)'=\lambda T'\forall\lambda\in\F$
+    \item $\forall S\in\mathcal{L}(V,W):(ST)'=T'S'\forall T\in\mathcal{L}(U,V)$
+\end{itemize}
+\null\hfill{Prove the above as an exercise}
+\subsubsection{The Null Space and Range of the Dual of a Linear Map}
+This section can be more easily interpreted with basis, however, proves with basis are convoluted\\
+\textbf{Definition: Annihilator}
+$$U^0:=\{\varphi\in V'\mid\forall u\in U:\varphi(u)=0\}$$
+\textbf{Inference: }The annihilator is a vector space\\
+\null\hfill{Prove as an exercise}\\
+\textbf{Inference:} dim$U$+dim$U^0=$dim$V$\\
+\textbf{Proof(1):}\\
+Suppose $v_1,\dots,v_m$ is a basis of $U$ and $v_{m+1}\dots v_n$ is a basis of $V-U$, clearly, $v_1,\dots,v_n$ is a basis of V.\\
+$\varphi_j(v_k):=\begin{cases}
+    1&k=j\\
+    0&k\neq j
+\end{cases}$, clearly $\varphi_1,\dots,\varphi_n$ is a basis of $V'$. Now we just have to prove:
+$$\mbox{dim}U^0=\mbox{dim}(V-U)=\mbox{dim}V-\mbox{dim}U$$
+Clearly, $\varphi_{m+1},\dots,\varphi_{n}\in U^0$. Suppose $\exists\varphi\in U^0$, then:
+$$\varphi=a_1\varphi_1+\dots+a_m\varphi_m+a_{m+1}\varphi_{m+1}+\dots+a_n\varphi_n\st a_1,\dots,a_n\in\F$$
+As $\varphi\in U^0$, we have: $\varphi(v_1)=\dots=\varphi(v_m)=0$. Clearly: $a_1=\dots=a_m=0\implies U^0\in\mbox{span}(\varphi_{m+1},\dots,\varphi_n)\quad\square$\\
+\textbf{Proof(2):}
+$$i:=\mathcal{L}(U,V),u\mapsto u\implies i'\in\mathcal{L}(V',U')\implies\mbox{dim range}i'+\mbox{dim null}i'=\mbox{dim}V'=\mbox{dim}V$$
+$$\mbox{By definition: null}i'=U^0\implies\mbox{dim range}i'+\mbox{dim}U^0=\mbox{dim}V$$
+If $\varphi\in U'$, then $\varphi$ can be extended to $\phi\in V'$. By definition:
+$$i'(\phi)=\varphi\implies\varphi\in\mbox{range}i'\implies\mbox{range}i'=U'\implies\mbox{dim range}(i')=\mbox{dim}U'=\mbox{dim}U\quad\square$$
+\textbf{Inference:} The null space of $T'$ (This inference can also be proved with the language of bases)
+\begin{equation}
+\begin{split}
+    (a)\,&\mbox{null}T'=(\mbox{range}T)^0\\
+    (b)\,&\mbox{dim null}T'=\mbox{dim null}T+\mbox{dim}W-\mbox{dim}V
+\end{split}
+\end{equation}
+\textbf{Proof:}
+\begin{equation}
+\begin{split}
+    (a)\,&\varphi\in\mbox{null}T'\iff\0=T'(\varphi)=\varphi\circ T\iff\forall v\in V:0=(\varphi\circ T)(v)=\varphi(Tv)\iff\varphi\in(\mbox{range}T)^0\\
+    (b)\,&\mbox{dim null}T'=\mbox{dim}(\mbox{range}T)^0=\mbox{dim}W-\mbox{dim range}T=\mbox{dim}W-(\mbox{dim}V-\mbox{dim null}T)
+\end{split}
+\end{equation}
+\textbf{Inference:} $T$ surjective$\iff T'$ injective\\
+\textbf{Proof:}
+$$T\in\mathcal{L}(V,W)\mbox{ is surjective}\iff\mbox{range}T=W\iff\{0\}=(\mbox{range}T)^0=\mbox{null}T'\iff T'\mbox{ is injective}$$
+\textbf{The range of} $T'$
+\begin{equation}
+\begin{split}
+    (a)\,&\mbox{dim range}T'=\mbox{dim range}T\\
+    (b)\,&\mbox{range}T'=(\mbox{null}T)^0
+\end{split}
+\end{equation}
+\textbf{Proof:}
+\begin{equation}
+\begin{split}
+    (a)\,&\mbox{dim range}T'=\mbox{dim}W'-\mbox{dim null}T'=\mbox{dim}W-\mbox{dim}(\mbox{range}T)^0=\mbox{dim range}T\\
+    (b)\,&\varphi\in\mbox{range}T'\iff\varphi\in\{T'(\phi)\mid\phi\in W'\}\equiv\varphi\in\{\phi\circ T\mid\phi\in W'\}\implies\forall v\in\mbox{null}T:\varphi v=0\iff\varphi\in(\mbox{null}T)^0\\
+    &\mbox{dim range}T'=\mbox{dim range}T=\mbox{dim}V-\mbox{dim null}T=\mbox{dim}(\mbox{null}T)^-0
+\end{split}
+\end{equation}
+\textbf{Inference:} $T$ injective$\iff T'$ surjective\\
+\textbf{Proof:}
+$$T\in\mathcal{L}(V,W)\mbox{ is injective}\iff\mbox{null}T=\{0\}\iff V'=(\mbox{null}T)^0=\mbox{range}T'\iff T'\mbox{ is surjective}$$
+\subsubsection{The Matrix of the Dual of a Linear Map}
+\textbf{Definition: transpose} $A^t$
+$$(A^t)_{kj}=A_{jk}$$
+\textbf{Inference:}\\
+Suppose $A$ is an $m-n$ matrix, $C$ is an $n-p$ matrix, then $(AC)^t=C^tA^t$\\
+\textbf{Proof:}
+$$((AC)^t)^{kj}=(AC)_{jk}=\sum_{r=1}^nA_{jr}C_{rk}=\sum_{r=1}^n(C^t)_{kr}(A^t)_{rj}=(C^tA^t)_{kj}$$
+\textbf{Inference:}\\
+Assume $v_1,\dots,v_n$ to be a basis of $V$, $w_1,\dots,w_m$ to be a basis of $W$. Let $\varphi_1,\dots,\varphi_n$, $\phi_1,\dots,\phi_m$ be their corresponding dual bases. $T\in\mathcal{L}(V,W)$, then
+$$\mathcal{M}(T')=(\mathcal{M}(T))^t$$
+\textbf{Proof:}\\
+Let $A=\mathcal{M}(T),C=\mathcal{M}(T')$, then
+\begin{equation}
+\begin{split}
+    T'(\phi_j)=\sum_{r=1}^nC_{rj}\varphi_r\implies(\phi_j\circ T)(v_k)&=\sum_{r=1}^nC_{rj}\varphi_r(v_k)=C_{kj}\\
+    &=\phi_j(Tv_k)=\phi_j\left(\sum_{r=1}^mA_{rk}w_r\right)=\sum_{r=1}^mA_{rk}\phi_j(w_r)=A_{jk}
+\end{split}
+\end{equation}
+\subsubsection{The Rank of a Matrix}
+\textbf{Definition: Row Rank, Column Rank}\\
+Suppose $A$ is a $m-n$ matrix with entries in $\F$
+\begin{equation}
+\begin{split}
+    \mbox{Row rank}&:=\mbox{span}(A_{1\cdot},\dots,A_{m\cdot})\\
+    \mbox{Column rank}&:=\mbox{span}(A_{\cdot1},\dots,A_{\cdot n})
+\end{split}
+\end{equation}
+\textbf{Inference:}\\
+Suppose $V\in\F^n,W\in\F^m,T\in\mathcal{L}(V,W)$, then
+$$\mbox{dim range}T=\mbox{column rank of }\mathcal{M}(T)$$
+\textbf{Proof:}\\
+Suppose $v_1,\dots,v_n$ is a basis of $V$ and $w_1,\dots,w_m$ is a basis of $W$, then there is isomorphism
+$$\mathcal{M}:\mbox{range}T=\mbox{span}(Tv_1,\dots,Tv_n)\to\mbox{span}(\mathcal{M}(Tv_1),\dots,\mathcal{M}(Tv_n)),w\mapsto\mathcal{M}(w)$$
+$$\implies\mbox{dim range}T=\mbox{column rank of }\mathcal{M}(T)$$
+\textbf{Inference:} Column rank $=$ Row rank\\
+\textbf{Proof:}\\
+For any matrix, it is clearly possible to construct a corresponding linear mapping. Let $A$ be an arbitrary matrix and $T$ be the corresponding linear mapping, then
+$$\mbox{column rank of }A=\mbox{column rank of }\mathcal{M}(T)=\mbox{dim range}T=$$
+$$\mbox{dim range}T'=\mbox{column rank of }\mathcal{M}(T')=\mbox{column rank of }A^t=\mbox{row rank of }A$$
+Hence, the definition of rank is unified.
+\subsubsection{Rank and the RRE}
+\textbf{Theorem: The RRE is unique}\\
+\null\hfill{Prove as an exercise using induction on the number of columns}\\
+\textbf{Theorem: }$\forall A,b:\exists x\st Ax=b\iff\mbox{rank}(A|b)=\mbox{rank}A$\\
+\textbf{Proof:}\\
+The theorem is trivial for all $A$ in RRE form.\\
+Otherwise, let $E$ be the ERO that transforms $A$ into its RRE form.
+$$\mbox{rank}(A|b)=\mbox{rank}(A)\iff=\mbox{rank}(EA|Eb)=\mbox{rank}(EA)\iff\exists x\st EAx=Eb\iff\exists x\st Ax=b$$
+\clearpage
+\section{Polynomials}
+\clearpage
+\section{Eigenvalues, Eigenvectors, and Invariant Subspaces}
+\subsection{Invariant Subspaces}
+\textbf{Definition: Invariant Subspace}\\
+Suppose $T\in\mathcal{L}(V)$, its $U$ is invariant under $T$ if $u\in U\implies Tu\in U$\\
+Clearly, the following are invariant under $T\in\mathcal{L}(V)$:
+$$(a)\,\{0\}\quad(b)\,V\quad(c)\,\mbox{null}T\quad(d)\,\mbox{range}T$$
+\subsubsection{Eigenvalues and Eigenvectors}
+\textbf{Definition:}\\
+Suppose $T\in\mathcal{L}(V)$, then if for some non-0 $v\in V\st\exists\lambda\in\F\st Tv=\lambda v$, then $v$ is an \textit{\textbf{eigenvector }}under $T$ and $\lambda$ is its corresponding \textit{\textbf{eigenvalue}}.\\
+Note that for any eigenvalue $v:U:=\{zv\mid z\in\F\}$ is an invariant subspace of $V$ under $T$\\
+Clearly: $\lambda$ is an eigenvalue of $T\iff\mbox{null}(T-\lambda I)\neq\{0\}$\\
+\textbf{Inference:}\\
+Let $T\in\mathcal{L}(V)$, suppose $\lambda_1,\dots,\lambda_m$ are distinct eigenvalues of $T$ and $v_1,\dots,v_m$ are the corresponding eigenvectors. Then $v_1,\dots,v_m$ are linearly independent.\\
+\textbf{Proof:}\\
+Suppose $v_1,\dots,v_m$ is linearly dependent, let $k$ be the smallest positive integer such that $v_k\in\mbox{span}(v_1,\dots,v_{k-1})\implies$
+\begin{equation}
+\begin{split}
+    v_k=a_1v_1+\dots+a_{k-1}v_{k-1}\implies Tv_k&=T(a_1v_1+\dots+a_{k-1}v_{k-1})\\
+    =\lambda_kv_k&=a_1\lambda_1v_1+\dots+a_{k-1}\lambda_{k-1}v_{k-1}\\
+    &=a_1\lambda_kv_1+\dots+a_{k-1}\lambda_kv_{k-1}
+\end{split}
+\end{equation}
+$$\implies0=a_1(\lambda_k-\lambda_1)v_1+\dots+a_{k-1}(\lambda_k-\lambda_{k-1})v_{k-1}\implies a_1=\dots=a_{k-1}=0\implies v_k=0\,(\mbox{contradiction})\,\square$$
+Clearly, $T\in\mathcal{L}(V)$ has at most dim$V$ distinct eigenvalues.\\
+\subsubsection{Restriction and Quotient Operators}
+\textbf{Definition:}\\
+Suppose $T\in\mathcal{L}(V)$ and $U$ is a subspace of $V$ invariant under $T$
+\begin{itemize}
+    \item The \textbf{restriction operator} $T|_U\in\mathcal{L}(U)$ is defined by $T|_U(u)=T(u),\forall u\in U$
+    \item The \textbf{quotient operator} $T/U\in\mathcal{L}(V/U)$ is defined by $T/U(v+U)=Tv+U,\forall v\in V$
+\end{itemize}
+\subsection{Eigenvectors and Upper-Triangular Matrices}
+\subsubsection{Polynomials Applied to Operators}
+$$\forall T\in\mathcal{L}(V):$$
+\begin{equation}
+\begin{split}
+    (1)\,&T^m:=\underbrace{T\dots T}_{m\mbox{ times}}\\
+    (2)\,&T^0:=I\\
+    (3)\,&T^{-m}:=(T^{-1})^m
+\end{split}
+\end{equation}
+\textbf{Definition: polynomial of operator}
+$$\forall T\in\mathcal{L}(V),\forall p\in\mathcal{P}(\F)\st p(z)=\sum_{r=0}^ma_rz^r:p(T)=\sum_{r=0}^ma_rT^r$$
+\textbf{Definition: product of polynomial}
+$$\forall p,q\in\mathcal{P}(\F):pq\in\mathcal{P}(\F)\mbox{ and }\forall z\in\F:(pq)(z)=p(z)q(z)$$
+\textbf{Inference:} Multiplicative properties (Clearly)\\
+Suppose $p,q\in\mathcal{P}(\F),T\in\mathcal{L}(V)$ then:
+$$(pq)(T)=p(T)q(T)=(qp)(T)$$
+\subsubsection{Existence of Eigenvalues}
+Operators on complex vector spaces have an eigenvalue\\
+\textbf{Proof:}
+$$\forall\mbox{ complex vector space }V\st\mbox{dim}V=n,\forall T\in\mathcal{L}(V),\forall v\in V\st v\neq0:T^0v,\dots,T^nv\mbox{ is dependent}\implies$$
+\null\hfill{(as there are $n+1>n$ vectors)}
+$$\exists a_0,\dots,a_n\st a_0T^0v+\dots+a_nT^nv=0=\dots,a_n\st (a_0T^0+\dots+a_nT^n)v=0=c(T-\lambda_1I)\cdots(T-\lambda_mI)v$$
+Hence, $v$ must be an eigenvector
+\subsubsection{Upper-Triangular Matrices}
+\textbf{Definition: Upper-Triangular Matrix}
+$$T\in\mathcal{L}(V)\st V\in F^m\mbox{ with basis }v_1,\dots,v_m:\mathcal{M}(T)=\begin{pmatrix}
+    \lambda_1&&*\\
+    &\cdots&\\
+    0&&\lambda_m
+\end{pmatrix}\mbox{ is an upper triangular matrix}$$
+On a complex space, $\lambda_1$ is clearly an Eigenvalue\\
+\textbf{Inferences:} The following are equivalent (Clearly)
+\begin{itemize}
+    \item the matrix of $T$ is upper-triangular
+    \item $\forall j=1,\dots,m:Tv_j\in\mbox{span}(v_1,\dots,v_j)$
+    \item $\forall j=1,\dots,m:\mbox{span}(v_1,\dots,v_j)$ is invariant under $T$
+\end{itemize}
+\textbf{Theorem:} Over $\mathbb{C}$, every operator has an upper-triangular matrix\\
+\textbf{Proof(1):}\\
+The proposition is trivially true for dim$V$=1\\
+Suppose dim$V>1$ and the result holds $\forall W\st\mbox{dim}W<\mbox{dim}V$.\\
+Based on the existence of an eigenvalue $\lambda_1$: $U:=\mbox{range}(T-\lambda_1I)$\\
+Clearly, dim$U<$dim$V$. $U$ is invariant under $T$, as $\forall u\in U:Tu=(T-\lambda_1I)u+\lambda u\in U$\\
+Thus, $T|_U$ is an operator on $U$ with an upper-triangular matrix with respect to bases: $u_1,\dots,u_m$\\
+Extending $u_1,\dots,u_m$ to a bases of $V: u_1,\dots,u_m,v_1,\dots,v_n$ there is:
+$$\forall v_k:Tv_k=(T-\lambda_1v_k)+\lambda_1v_k\in\mbox{span}(u_1,\dots,u_m,v_1,\dots,v_k)$$
+Hence, an upper-triangular matrix exists\\
+\textbf{Proof(2):}
+The proposition is trivially true for dim$V$=1\\
+dim$V>1$ and the result holds $\forall W\st\mbox{dim}W=\mbox{dim}V-1$.\\
+Based on the existence of an eigenvector $v_1$: $U:=\mbox{span}v_1\implies\mbox{dim}V/U=\mbox{dim}V-1\implies$\\
+$\mathcal{M}(T/U)$ is upper triangular with respect to some bases: $v_2+U,\dots,v_{\mbox{dim}V}+U\iff$
+$$\forall j=2,\dots,\mbox{dim}V:(T/U)(v_j+U)\in\mbox{span}(v_2+U,\dots,v_{\mbox{dim}V}+U)\implies Tv_j\in\mbox{span}(v_1,\dots,v_j)$$
+\textbf{Theorem:}\\
+Suppose $T\in\mathcal{L}(V)$ has an upper-triangular matrix with respect to bases $v_1,\dots,v_n$ of $V$, then
+$$T\mbox{ is invertible}\iff\mbox{all entries on the diagonal are non-}0$$
+\textbf{Proof:}
+$$\mbox{Suppose }\mathcal{M}(T)=\begin{pmatrix}
+    \lambda_1&&&*\\
+    &\lambda_2&&\\
+    &&\ddots&\\
+    0&&&\lambda_n
+\end{pmatrix}$$
+Diagonals all non-0$\implies T\left(\dfrac{v_1}{\lambda_1}\right)=v_1,T\left(\dfrac{v_2}{\lambda_2}\right)=av_1+v_2,\dots$ thus, after applying Gaussian elimination, it is not hard to see that $v_1,\dots,v_n\in\mbox{range}(T)$\\
+$\lambda_j=0\implies\mbox{range}T|_{\mbox{span}(v_1,\dots,v_j)}\in\mbox{span}(v_1,\dots,v_{j-1})\implies T$ is not surjective $\iff T$ is not a surjection\\
+\textbf{Inference:} The diagonal entries of a upper-triangular matrix are the eigenvalues of the corresponding operator\\
+\textbf{Proof:}
+$$M(T-\lambda I)=\begin{pmatrix}
+    \lambda_1-\lambda&&&*\\
+    &\lambda_2-\lambda&&\\
+    &&\ddots&\\
+    0&&&\lambda_n-\lambda
+\end{pmatrix}$$
+\null\hfill{Complete the proof as an exercise}
+\subsection{Eigenspaces and Diagonal Matrices}
+\textbf{Definition: Upper-Triangular Matrix}
+$$T\in\mathcal{L}(V)\st V\in F^m\mbox{ with basis }v_1,\dots,v_m:\mathcal{M}(T)=\begin{pmatrix}
+    \lambda_1&&0\\
+    &\cdots&\\
+    0&&\lambda_m
+\end{pmatrix}\mbox{ is a diagonal matrix}$$
+$T$ is said to be \textit{\textbf{diagonalisable}} if there is a basis with respect to which $\mathcal{M}(T)$ is diagonal\\
+\textbf{Definition: Eigenspace} $E(\lambda,T):=\mbox{null}(T-\lambda I)$\\
+\textbf{Inference:} The sum of eigenspaces is a direct sum\\
+\textbf{Inferences:}\\
+$T$ is diagonalisable$\iff V$ has a basis consisting of eigenvalues of $T$
+\null\hfill{Prove as an exercise}
+\clearpage
+\section{Inner Product Spaces}
+\subsection{Inner Products and Norms}
+\subsubsection{Inner Products}
+\textbf{Definition: Inner Product}\\
+$\forall u,v\in V\mbox{ on }\F,f:V^2\to\F,(u,v)\mapsto\langle u,v\rangle\st$
+\begin{itemize}
+    \item $\forall v\in V:\langle v,v\rangle\geq0$\null\hfill{\textbf{Positivity}}
+    \item $\langle v,v\rangle=0\iff v=0$\null\hfill{\textbf{Definiteness}}
+    \item $\forall u,v,w\in V:\langle u+v,w\rangle=\langle u,w\rangle+\langle v,w\rangle$\null\hfill{\textbf{Additivity in First Slot}}
+    \item $\forall u,v\in V,\forall\lambda\in\F:\langle \lambda u,v\rangle=\lambda\langle u,v\rangle$\null\hfill{\textbf{Homogeneity in First Slot}}
+    \item $\forall u,v\in V:\langle u,v\rangle=\overline{\langle v,u\rangle}$\null\hfill{\textbf{Conjugate Symmetry}}
+\end{itemize}
+\textit{\textbf{Inner product spaces}} are vector spaces on which an inner product is defined\\
+\textbf{Properties of an inner product:}
+\begin{enumerate}
+    \item $\forall\langle\rangle\in\mathcal{L}(V,\F),v\to\langle v,u\rangle$
+    \item $\forall u\in V:\langle0,u\rangle=\langle u,0\rangle=0$
+    \item $\forall u,v,w\in V:\langle u,v+w\rangle=\langle u,v\rangle+\langle u,w\rangle$
+    \item $\forall u,v\in V,\forall\lambda\in\F:\langle u,\lambda v\rangle=\overline{\lambda}\langle u,v\rangle$
+\end{enumerate}
+\null\hfill{Prove the above as an exercise}
+\subsubsection{Norms}
+\textbf{Definition: Norm}
+$$\forall v\in V:\mbox{the norm of }v,||v||:=\sqrt{\langle v,v\rangle}\quad\mbox{Clearly, }||\lambda v||=|\lambda|\cdot||v||$$
+\textbf{Definition: Orthogonal}\\
+$u,v\in V$ are orthogonal$:=\langle u,v\rangle=0$\\
+Trivially, 0 is the only vector orthogonal to itself and 0 is orthogonal to every other vector\\
+\textbf{Pythagoream Theorem:} $u$ and $v$ are orthogonal$\implies||u+v||^2=||u||^2+||v||^2$ (Trivially)\\
+\textbf{Orthogonal Decomposition:}
+$$\forall u,v\in V\,(u,v\neq0),\exists c\in\F,\exists w\in V(\st\langle w,v\rangle=0)\st u=cv+w$$
+\textbf{Proof:}
+Suppose the result is true, then 
+$$u=cv+(u-cv)\st0=\langle u-cv,v\rangle=\langle u,v\rangle-c||v||^2\implies c=\frac{\langle u,v\rangle}{||v||^2}\implies u=\frac{\langle u,v\rangle}{||v||^2}v+\left(u-\frac{\langle u,v\rangle}{||v||^2}v\right)$$
+The verification is trivial\\
+\textbf{Cauchy-Schwarz Inequality}\\
+The 0 case is trivial\\
+$\forall u,v\in V\,(u,v\neq0):|\langle u,v\rangle|\le||u||\cdot||v||$
+$$u=\frac{\langle u,v\rangle}{||v||^2}v+w\implies||u||^2=\left|\left|\frac{\langle u,v\rangle}{||v||^2}v\right|\right|^2+||w||^2=\frac{|\langle u,v\rangle|^2}{||v||^2}+||w||^2\geq\frac{|\langle u,v\rangle|}{||v||^2}\quad\square$$
+\textbf{Triangular Inequality} $\forall u,v\in V:||u+v||\le||u||+||v||$\\
+\textbf{Proof:}
+$$||u+v||^2=\langle u+v,u+v\rangle=||u||^2+||v||^2+2\mbox{Re}\langle u,v\rangle\le||u||^2+||v||^2+2|\langle u,v\rangle|\le||u||^2+||v||^2+2||u||\cdot||v||=(||u||+||v||)^2$$
+\null\hfill{$\square$}\\
+\textbf{Parallelogram Inequality:}
+$$||u+v||^2+||u-v||^2=2(||u||^2+||v||^2)$$
+\textbf{Proof:}\\
+\null\hfill{Make links with the parallelogram and prove as an exercise}
+\subsection{Orthonormal Bases}
+\textbf{Definition: Orthonormal Bases}\\
+Basis where all vectors are orthogonal to each other each with norm 1, denoted as $e_1,\dots,e_m$\\
+Clearly, $||a_1e_1+\dots+a_me_m||^2=|a_1|^2+\dots+|a_m|^2$\\
+\textbf{Inference:} Orthonormal basis are linearly independent\\
+\textbf{Proof:}\\
+$a_1e_1+\dots+a_me_m=0\implies||a_1e_1+\dots+a_me_m||^2=0=|a_1|^2+\dots+|a_m|^2\implies a_1=\dots=a_m=0$\\
+\textbf{Inference:} Suppose $e_1,\dots,e_m$ isn orthonormal basis of $V$ and $v\in V$, then
+$$v=\langle v,e_1\rangle e_1+\dots+\langle v,e_m\rangle e_m$$
+\textbf{Proof:}\\
+Clearly, $\exists a_1,\dots,a_m\in\F\st v=a_1e_1+\dots+a_me_m\implies \langle v,e_j\rangle=\langle a_1e_1+\dots+a_me_m,e_j\rangle=a_j$\\
+\textbf{Gram-Schmidt Procedure}\\
+Suppose $v_1,\dots,v_m$ is a linearly independent list of vector in $V$
+$$e_1:=\dfrac{v_1}{||v_1||},e_j:=\dfrac{v_j-\langle v_j,e_1\rangle e_1-\dots-\langle v_j,e_{j-1}\rangle e_{j-1}}{||v_j-\langle v_j,e_1\rangle e_1-\dots-\langle v_j,e_{j-1}\rangle e_{j-1}||}$$
+Quite trivially, $e_1,\dots,e_m$ is an orthonormal basis of $V$.\\
+This procedure also proves that an orthonormal basis always exists and that any orthonormal list extends to an orthonormal basis.\\
+\textbf{Inference:} If an operator has an upper-triangular matrix, it has an upper-triangular matrix with respect to some orthonormal basis.\\
+\null\hfill{Prove as an exercise}\\
+\textbf{Hint:} with the Gram-Schmidt Procedure: $\forall j=1,\dots,m:\mbox{span}(e_1,\dots,e_j)=\mbox{span}(v_1,\dots,v_j)$\\
+This inference trivially proves \textbf{Schur's Theorem}, which states that any operator on a finite complex vector space has an upper-triangular matrix with respect to some orthonormal bases.
+\subsubsection{The Identity Matrix}
+$$\mathcal{M}(I_n):=\begin{pmatrix}
+    1&\cdots&0\\
+    \vdots&\ddots&\vdots\\
+    0&\cdots&1
+\end{pmatrix}\st\delta_{jk}:=\mathcal{M}(I_n)_{jk}=\begin{cases}
+    1&j=k\\
+    0&j\neq k
+\end{cases}$$
+Here, $\delta_{jk}$ is referred to as the \textit{\textbf{Kroncker delta}}\\
+Clearly: $\displaystyle\sum_{j=1}^n a_j\delta_{jk}=a_k$, in the language of linear maps, as have:
+$$\forall V\in\F^n\mbox{ with orthonormal basis }e_1,\dots,e_n,\forall v\in V\st v=a_1e_1+\dots+a_ne_n:\langle v,\mathcal{M}(I)_{\cdot k}\rangle=a_k$$
+Note that an $n$-dimensional identity matrix has size $n$ by $n$.\\
+\subsubsection{Linear Functionals on Inner product Spaces}
+\textbf{Riesz Representation Theorem:}
+$$\forall V\in\F^n,\forall\varphi\in\mathcal{L}(V,\F),\exists!u\in V\st\forall v\in V:\varphi(v)=\langle v,u\rangle$$
+\textbf{Proof:}
+Suppose $e_1,\dots,e_m$ is an orthonormal basis of $V$, then
+$$\forall v\in V:\varphi(v)=\varphi(\langle v,e_1\rangle e_1+\dots+\langle v,e_m\rangle e_m)=\langle v,e_1\rangle\varphi(e_1)+\dots+\langle v,e_m\rangle\varphi(e_m)=\left\langle v,\overline{\varphi(e_1)}e_1\right\rangle+\dots+\left\langle v,\overline{\varphi(e_1)}e_m\right\rangle$$
+$$=\left\langle v,\overline{\varphi(e_1)}e_1+\dots+\overline{\varphi(e_m)}e_m\right\rangle\implies u=\overline{\varphi(e_1)}e_1+\dots+\overline{\varphi(e_m)}e_m$$
+\subsection{Orthogonal Complements and Minimisation Problems}
+\subsubsection{Orthogonal Complements}
+\textbf{Definition: Orthogonal Complement} $U^\perp$
+$$\forall V\in\F^n,\forall U\subset V,U^\perp:=\{v\in V\mid\forall u\in U:\langle u,v\rangle=0\}$$
+\textbf{Inferences:}
+\begin{equation}
+\begin{split}
+    (a)\,&U^\perp\mbox{ is a subspace of }V\\
+    (b)\,&\{0\}^\perp=V\\
+    (c)\,&V^\perp=\{0\}\\
+    (d)\,&U\cap U^\perp\subset\{0\}\\
+    (e)\,&U\subset W\implies W^\perp\subset U^\perp
+\end{split}
+\end{equation}
+\null\hfill{Prove the above as exercise}\\
+\textbf{Inference:}
+$$\forall V\in\F^n,\forall\mbox{ subspace $U$ of $V$}:U\oplus U^\perp=V$$
+\null\hfill{Prove as an exercise}\\
+Hence, clearly, dim$U$+dim$U^\perp= $dim$V$\\
+\textbf{Inference:}\\
+Suppose $U$ is a subspace of $V$, then $U=(U^\perp)^\perp$\\
+\null\hfill{Prove as an exercise}\\
+\textbf{Definition: Orthogonal Projection}
+$$\forall V\in\F^n,\forall\mbox{ subspace $U$ of $V$}:P_U\in\mathcal{L}(V,U)\st\forall v=u+w\in V\,(u\in U\land w\in U^\perp):P_Uv=u$$
+Quite clearly, for every orthonormal basis $e_1,\dots,e_m$ of $U:P_Uv=\langle v,e_1\rangle e_1+\dots+\langle v,e_m\rangle e_m$
+\subsubsection{Minimisation Problems}
+\textbf{Theorem:}
+$$\forall V\in\F^n,\forall\mbox{ subspace $u$ of $V$},\forall v\in V,\forall u\in U:||v-P_Uv||\le||v-u||$$
+\textbf{Proof:}
+$$||v-P_Uv||^2\le||v-P_uv||^2+||P_Uv-u||^2=||(v-P_Uv)+(P_Uv-u)||^2=||v-u||^2$$
+\subsubsection{Linear Systems as Linear Maps}
+Clearly, all linear systems can be written as: 
+$$Tx=b\st T\in\mathcal{L}(V,W),x\in V,b\in W$$
+Thus trivially:
+\begin{enumerate}
+    \item The system has no solution$\iff b\in W\symbol{92}\mbox{range}(T)\equiv(\mbox{range}T)^\perp\symbol{92}\{0\}$
+    \item The system has a unique solution$\iff T$ is an injection $\land\,b\in\mbox{range}T$
+    \item The system has infinitly many solutions$\iff T$ is not injective $\land\,b\in\mbox{range}T$
+\end{enumerate}
+In RRE form, the above corresponds to:
+\begin{enumerate}
+    \item Exists rows in the form of: $(0\cdots0|1)$
+    \item The non-0 rows form an identity matrix
+    \item No presence of rows in the form of: $(0\cdots0|1)$, containing 0 columns. The number of 0 columns corresponds the dimensions of the solution space.
+\end{enumerate}
+\clearpage
+\section{Operators on Inner Product Spaces}
+\subsection{Self-Adjoint and Normal Operators}
+\subsubsection{Adjoints}
+\textbf{Definition: Adjoint} $T^*$
+$$\forall T\in\mathcal{L}(V,W),T*\in\mathcal{L}(W,V)\st\forall v\in V,\forall w\in W:\langle Tv,w\rangle=\langle v,T^*w\rangle$$
+The linearity of $T^*$ is easy to verify\\
+\textbf{Properties of the adjoint:}
+\begin{equation}
+\begin{split}
+    (a)\,&\forall S,T\in\mathcal{L}(V,W):(S+T)^*=S^*+T^*\\
+    (b)\,&\forall T\in\mathcal{L}(V,W),\forall\lambda\in\F:(\lambda T)^*=\overline{\lambda}T^*\\
+    (c)\,&\forall T\in\mathcal{L}(V,W):(T^*)^*=T\\
+    (d)\,&\forall V:I^*=I\\
+    (e)\,&\forall S\in\mathcal{L}(U,V),\forall T\in\mathcal{L}(V,W):(ST)^*=T^*S^*
+\end{split}
+\end{equation}
+\textbf{Null Space and Range of }$T^*$\\
+Suppose $T\in\mathcal{L}(V,W)$, then
+\begin{equation}
+\begin{split}
+    (a)\,&\mbox{null}T^*=(\mbox{range}T)^\perp\\
+    (b)\,&\mbox{range}T^*=(\mbox{null}T)^\perp
+\end{split}
+\end{equation}
+\null\hfill{Prove as an exercise}\\
+\textbf{The Matrix of the adjoint is the conjugate transpose with respect to orthonomal basis}\\
+\textbf{Proof:}\\
+Let $T\in\mathcal{L}(V,W)$, suppose $e_1,\dots,e_n$ is an orthonormal basis of $V$, $f_1,\dots,f_m$ is an orthonormal basis of $W$.
+$$\mathcal{M}(T):=\mathcal{M}(T,(e_1,\dots,e_n),(f_1,\dots,f_m)),\quad\mathcal{M}(T^*):=\mathcal{M}(T^*,(f_1,\dots,f_m),(e_1,\dots,e_n))$$
+$$Te_k=\langle Te_k,f_1\rangle f_1+\dots+\langle Te_k,f_m\rangle f_m\implies\mathcal{M}(T)_{jk}=\langle Te_k,f_j\rangle=\overline{\langle T^*f_j,e_k\rangle}=\overline{\mathcal{M}(T^*)_{kj}}$$
+\subsubsection{Self-Adjoint Operators}
+\textbf{Definition: Self-Adjoint}\\
+Suppose $T\in\mathcal{L}(V)$, then $T$ is self-adjoint$\iff T=T^*$\\
+\textbf{Inference:} Eigenvalues of self-adjoint operators are real\\
+\textbf{Proof:} Suppose $T$ is self-adjoint and $v$ is its eigenvector with eigenvalue $\lambda$, then
+$$\langle Tv,v\rangle=\langle v,Tv\rangle\implies\langle\lambda v,v\rangle=\langle v,\lambda v\rangle\implies\lambda||v||^2=\overline{\lambda}||v||^2\implies\lambda=\overline{\lambda}\quad\square$$
+\textbf{Inference:} Suppose $V=\mathbb{C}^n,T\in\mathcal{L}(V):(\forall v\in V:\langle Tv,v\rangle=0)\iff(T=\0)$\\
+\textbf{Proof:}
+Suppose $\forall v\in V:\langle Tv,v\rangle=0$, then $\forall u,w\in V:$
+$$\langle Tu,w\rangle=\frac{\langle T(u+w),(u+w)\rangle-\langle T(u-w),u-w\rangle}{4}+\frac{\langle T(u+iw),u+iw\rangle-\langle T(u-iw),u-iw\rangle}{4}i=0\implies T=\0$$
+The other direction is trivial\quad$\square$\\
+\textbf{Inference:} Suppose $V=\mathbb{C}^n,T\in\mathcal{L}(V):(\forall v\in V:\langle Tv,v\rangle\in\R)\iff(T=T^*)$\\
+\textbf{Proof:} Suppose $\forall v\in V:\langle Tv,v\rangle\in\R$, then
+$$\forall v\in V:\langle Tv,v\rangle=\langle v,T^*v\rangle=\overline{\langle T^*v,v\rangle}=\langle T^*v,v\rangle\implies\langle(T-T^*)v,v\rangle=0\implies T-T^*=0\iff T=T^*$$
+Suppose $T=T^*$, then
+$$\forall v\in V:\langle Tv,v\rangle=\langle v,Tv\rangle=\overline{\langle Tv,v\rangle}\implies\langle Tv,v\rangle\in\R$$
+\textbf{Inference:} Suppose $V=\R^n,T\in\mathcal{L}(V):(T=T^*\land\forall v\in V:\langle Tv,v\rangle=0)\iff(T=\0)$\\
+\textbf{Proof:}
+Suppose $\forall v\in V:\langle Tv,v\rangle=0$, then $\forall u,w\in V:$
+$$\langle Tu,w\rangle=\frac{\langle T(u+w),(u+w)\rangle-\langle T(u-w),u-w\rangle}{4}=0\implies T=\0$$
+The other direction is trivial\quad$\square$
+\subsubsection{Normal Operators}
+\textbf{Definition: Normal Operator}
+$$T\in\mathcal{L}(V),T\mbox{ is normal}:=TT^*=T^*T$$
+\textbf{Inference:} $T\in\mathcal{L}(V),T$ is normal$\iff\forall v\in V:||Tv||=||T^*v||$\\
+\textbf{Proof:}
+$$T\mbox{ is normal}\iff TT^*=T^*T\iff TT^*-T^*T=\0\iff\forall v\in V:\langle (TT^*-T^*T)v,v\rangle=0$$
+$$\iff\langle TT^*v,v\rangle=\langle T^*Tv,v\rangle\iff||Tv||^2=||T^*v||^2$$
+\textbf{Inference:} A normal operator has the same eigenvector as its adjoint and the corresponding eigenvalues are conjugates\\
+\textbf{Proof:}
+Suppose $T\in\mathcal{L}(V)$, $v$ is its eigenvector and $\lambda$ is the corresponding eigenvalue, then
+$$T\mbox{ is normal}\iff T-\lambda I\mbox{ is normal}\implies0=||(T-\lambda I)v||=||(T-\lambda I)^*v||=||(T^*-\overline{\lambda}I)v||$$
+\textbf{Inference:} With normal operators, eigenvectors corresponding to distinct eigenvalues are orthogonal\\
+\textbf{Proof:}\\
+Suppose $\lambda_u,\lambda_v$ are distinct eigenvalues of $T\in\mathcal{L}(V)$ with eigenvectors $u,v$, thus
+$$(\lambda_u-\lambda_v)\langle u,v\rangle=\langle \lambda_u u,v\rangle-\langle u,\overline{\lambda_v}v\rangle=\langle Tu,v\rangle-\langle u,T^*v\rangle=0\quad\square$$
+\subsection{The Spectral Theorem}
+\subsubsection{The Complex Spectral Theorem}
+\textbf{The Complex Spectrual Theorem:}\\
+Suppose $V=\mathbb{C}^n,T\in\mathcal{L}(V)$, then
+$$TT^*=T^*T\iff V\mbox{ has an orthonormal basis consisting of eigenvectors of }T$$
+\textbf{Proof:}
+$$V\mbox{ has an orthonormal basis of eigenvectors of }T\iff T\mbox{ has a diagonal matrix with respect to such basis}$$
+$$\iff T^*\mbox{ has a diagonal matrix with respect to such basis}\implies TT^*=T^*T\quad(\mbox{Clearly})$$
+Suppose $T$ is normal, by Schur's Theorem,$\exists e_1,\dots,e_n$ is an orthonormal basis of $T\st$
+$$\mathcal{M}(T,(e_1,\dots,e_n))=\begin{pmatrix}
+    a_{11}&\cdots&a_{1n}\\
+    &\ddots&\vdots\\
+    0&&a_{nn}
+\end{pmatrix}$$
+Cleary, $||Te_1||^2=|a_{11}|^2=||T^*e_1||^2=|a_{11}|^2+\dots+|a_{1n}|^2\implies a_{12}=\dots=a_{1n}=0$\\
+Repeat this procedure for $e_2,\dots,e_n\quad\square$
+\subsubsection{The Real Spectral Theorem}
+\textbf{Lemma:}
+$$\forall T\in\mathcal{L}(V)\st T\mbox{ is self-adjoint},\forall b,c\in\R\st b^2<4c:T^2+bT+cI\mbox{ is invertible}$$
+\textbf{Proof:}
+$$\forall v\in V\st v\neq0:\langle(T^2+bT+cI)v,v\rangle=\langle T^2v,v\rangle+b\langle Tv,v\rangle+c\langle v,v\rangle=\langle Tv,Tv\rangle+n\langle Tv,v\rangle+c||v||^2$$
+$$\geq||Tv||^2-|b|\cdot||Tv||\cdot||v||+c||v||^2=\left(||Tv||-\frac{|b|\cdot||v||}{2}\right)^2+\left(c-\frac{b^2}{4}\right)||v||^2>0$$
+$$\implies\forall v\in V:(T^2+bT+cI)v\neq0\iff T^2+bT+cI\mbox{ is invertible}$$
+\textbf{Inference:}
+Suppose $V=\R^n,T\in\mathcal{L}(V):T$ is self-adjoint$\implies T$ has an eigenvalue\\
+\textbf{Proof:}
+$$\mbox{Clearly,}\exists p_n\st(p_n(T))(v)=a_0T^0v+\dots+a_nT^nv=0\,(n+1\mbox{ vectors on $n$-dimensional space})$$
+$$\implies 0=(p_n(T))v=c\left(T^2+b_1T+c_1I\right)\cdots\left(T^2+b_MT+c_MI\right)(T-\lambda_1I)\cdots(T-\lambda_mI)(v)\st$$
+$$\forall j:T^2+b_jT+c_jI\mbox{ is invertible}\implies m>0\quad\square$$
+\textbf{Self-Adjoint Operators and Invariant Subspaces:}\\
+Suppose $T\in\mathcal{L}(V)$ is self-adjoint and $U$ is an invariant subspace of $V$, then $\begin{cases}
+    U^\perp\mbox{is invariant under }T\\
+    T|_U\in\mathcal{L}(V),T|_{U^\perp}\mbox{ are self-adjoint}
+\end{cases}$\\
+\textbf{Proof:}
+$$\begin{cases}
+    \mbox{Suppose }v\in U^\perp,v\in U\mbox{, then }\langle Tv,u\rangle=\langle v,Tu\rangle=0\\
+    \mbox{Clearly}
+\end{cases}$$
+\textbf{The Real Spectral Theorem:}\\
+Suppose $V=\R^n,T\in\mathcal{L}(V)$, then
+$$T=T^*\iff V\mbox{ has an orthonormal basis consisting of eigenvectors of }T$$
+\textbf{Proof:}
+$$V\mbox{ has an orthonormal basis of eigenvectors of }T\iff T\mbox{ has a diagonal matrix with respect to such basis}$$
+$$\iff T=T^*\,\mbox{(Real diagonal matrices are equal to their transpose)}$$
+Suppose $T$ is self-adjoint, let $u$ be an eigenvector such that $||u||=1,U:=\mbox{span}(u)$, clearly, $U$ is an invariant subspace of $V\implies T|_{U^\perp}\in\mathcal{L}(U^\perp)$ is self-adjoint$\implies$it has an eigenvalue, repeat this procedure$\quad\square$
+\subsection{Positive Operators and Isometries}
+\subsubsection{Positive Operators}
+\textbf{Definition: Positive Operator}
+$$\forall T\in\mathcal{L}(V)\st(T=T^*)\land(\forall v\in V:\langle Tv,v\rangle\geq0)$$
+\textbf{Definition: The Square Root} of $T\in\mathcal{L}(V)$ is defined a: $R\in\mathcal{L}(V)\st R^2=T$\\
+\textbf{Equivalent propositions to positivity:}
+\begin{equation}
+\begin{split}
+    (a)\,&T\mbox{ is self-adjoint with no negative eigenvalues}\\
+    (b)\,&T\mbox{ has a positive square root}\\
+    (c)\,&\exists R\in\mathcal{L}(V)\st T=R^*R
+\end{split}
+\end{equation}
+\null\hfill{Prove as an exercise}\\
+\textbf{Inference:} The positive square root is unique\\
+\textbf{Proof:}\\
+Suppose $T\in\mathcal{L}(V)$ is positive, $R$ is a positive square root of $T$, $e_1,\dots,e_m$ is an orthonormal basis of $R$, $\sqrt{\lambda_1},\dots,\sqrt{\lambda_m}$ are the corresponding eigenvalues, $\lambda$ is an eigenvalue of $T$, $v=a_1e_1+\dots+a_me_m$ is one of its corresponding eigenvalues. Then:
+$$Rv=a_1\sqrt{\lambda_1}e_1+\dots+a_m\sqrt{\lambda_m}e_m,R^2v=a_1\lambda_1e_1+\dots+a_m\lambda_me_m=Tv=a_1\lambda e_1+\dots+a_m\lambda e_m\implies$$
+$$a_1(\lambda-\lambda_1)e_1+\dots+a_m(\lambda-\lambda_m)e_m=0\implies a_1(\lambda-\lambda_1)=\dots=a_m(\lambda-\lambda_m)=0\implies\forall j\st a_j\neq0:\lambda_j=\lambda$$
+$$\implies v=\sum_{\{j\mid\lambda_j=\lambda\}}a_je_j\implies Rv=\sum_{\{j\mid\lambda_j=\lambda\}}a_j\sqrt{\lambda}e_j=\sqrt{\lambda}v$$
+hence, the positive square root is uniquely determined by $T\quad\square$
+\subsubsection{Isometries}
+\textbf{Definition: Isometry}\\
+$S\in\mathcal{L}(V)$ is an isometry $:=\forall v\in V:||Sv||=||v||$\\
+\textbf{Equivalent propositions to being an isometry:}
+\begin{equation}
+\begin{split}
+    (a)\,&\forall u,v\in V:\langle Su,Sv\rangle=\langle u,v\rangle\\
+    (b)\,&\forall\mbox{ orthonormal list }e_1,\dots,e_n\in V:Se_1,\dots,Se_n\mbox{ is orthonormal}\\
+    (c)\,&S^*S=I\\
+    (d)\,&SS^*=I\\
+    (e)\,&S^*\mbox{ is an isometry and }S^*=S^{-1}
+\end{split}
+\end{equation}
+\textbf{Proof:}
+\begin{equation}
+\begin{split}
+    \mbox{Isometry}\implies(a)\,&\forall v\in V:||Sv||=||V||\implies\forall V=\R^n:\langle Su,Sv\rangle=\frac{||Su+Sv||^2-||Su-Sv||^2}{4}\\
+    &=\frac{||S(u+v)||^2-||S(u-v)||^2}{4}=\frac{||u+v||^2-||u-v||^2}{4}=\langle u,v\rangle\quad(\mbox{the complex case is similar})\\
+    (a)\implies(b)\,&(\mbox{Prove as an exercise})\\
+    (b)\implies(c)\,&\mbox{Suppose }e_1,\dots,e_n\mbox{ is an orthonormal basis, then }Se_1,\dots,Se_n\mbox{ is an orthonormal basis}\\
+    &\implies\forall e_j,e_k:\langle e_j,e_k\rangle=\langle Se_j,Se_k\rangle=\langle S^*Se_j,e_k\rangle\iff\forall u,v\in V:\langle S^*Su,v\rangle=\langle u,v\rangle\\
+    &\iff\langle(S^*S-I)u,v\rangle=0\iff S^*S-I=\0\iff S^*S=I\\
+    (c)\iff\mbox{Isometry}\,&(\mbox{Clearly})\\
+    \mbox{Isometry}\implies(d)\,&S^*S=I\implies\forall u,v\in V:\langle Su,Sv\rangle=\langle u,v\rangle=\langle S^*Su,S^*Sv\rangle=\langle Su,SS^*Sv\rangle\\
+    &\mbox{From }(b)\mbox{ we know that }Su,Sv\mbox{ are arbitrary and independent}\implies\langle Su,(SS^*-I)(Sv)\rangle=0\\
+    &\implies\forall u',v':\langle u',(SS^*-I)v'\rangle=0\implies SS^*-I=\0\iff SS^*=I\\
+    (d)\implies(e)\,&\mbox{(Clearly)}\\
+    (e)\iff\mbox{Isometry}\,&\mbox{(Clearly)}
+\end{split}
+\end{equation}
+\textbf{An alternative proof between $(a)$ and $(e)$:}\\
+$V:=\mathcal{L}(\R,\R^n)$
+$$\forall u,v\in V:\langle Su,Sv\rangle=\langle u,v\rangle\iff(Su)^*Sv=u^*v\iff u^*S^*Sv=u^*v\iff u^*(S^*S-I)v=0$$
+$$\iff S^*S-I=0\iff S^*=S^{-1}$$
+Here, the intermediate proves have been done in the original proof.\quad$\square$\\
+\textbf{Description of Isometries on} $V=\mathbb{C}^n$:\\
+On a Complex vector space, using the complex spectral theorem, it is not hard to prove that:
+$$S\mbox{ is an isometry}\iff\mbox{$S$ has a diagonal matrix with non-0 entries with absolute values of 1}$$
+\null\hfill{Prove as an exercise}
+\subsection{Polar Decomposition and Singular Value Decomposition}
+\subsubsection{Polar Decomposition}
+\textbf{Notation:} $\sqrt{T}$ stands for the unique positive square root of positive operator $T$\\
+Treating complex number $z$ as a 1-1 matrix, we have $z=\dfrac{z}{|z|}|z|=\dfrac{z}{|z|}\sqrt{\overline{z}z}$, similarly, we have:\\
+\textbf{Theorem: Polar Decomposition}
+$$\forall T\in\mathcal{L}(V),\exists S\in\mathcal{L}(V)\,(\st\forall v\in V:||Sv||=||v||)\st T=S\sqrt{T^*T}$$
+\textbf{Proof:}\\
+Clearly, $\forall T\in\mathcal{L}(V):T^*T$ is positive$\implies\sqrt{T^*T}$ is positive$\implies$
+$$||Tv||^2=\langle Tv,Tv\rangle=\langle T^*Tv,v\rangle=\left\langle\left(\sqrt{T^*T}\right)^2v,v\right\rangle=\left\langle \sqrt{T^*T}v,\sqrt{T^*T}v\right\rangle=\left|\left|\sqrt{T^*T}v\right|\right|^2$$
+$$\forall v\in V,S_1:\mbox{range}\sqrt{T^*T}\to\mbox{range}T,\sqrt{T^*T}v\to Tv\,\mbox{trivially, }S_1\mbox{ is a well defined linear map}$$
+$$\forall v_1,v_2\st Tv_1=Tv_2:0=||Tv_1-Tv_2||=||T(v_1-v_2)||=\left|\left|\sqrt{T^*T}(v_1-v_2)\right|\right|=\left|\left|\sqrt{T^*T}v_1-\sqrt{T^*T}v_2\right|\right|$$
+$$\implies\sqrt{T^*T}v_1=\sqrt{T^*T}v_2\iff\sqrt{T^*T}\mbox{ is an injection}\implies\mbox{dim range}\sqrt{T^*T}=\mbox{dim range}\sqrt{T}$$
+$$\implies\mbox{dim}\left(\mbox{range}\sqrt{T^*T}\right)^\perp=\mbox{dim}\left(\mbox{range}T\right)^\perp$$
+Let $e_1,\dots,e_m$ be an orthonormal basis of $\left(\mbox{range}\sqrt{T^*T}\right)^\perp$ and $f_1,\dots,f_m$ of $\left(\mbox{range}T\right)^\perp$.
+$$S_2:\left(\mbox{range}\sqrt{T^*T}\right)^\perp\to\left(\mbox{range}T\right)^\perp,a_1e_1,\dots,a_me_m\mapsto a_1f_1,\dots,a_mf_m$$
+$$\forall v\in V:v=u+w\st\left(u\in\mbox{range}\sqrt{T^*T}\right)\land\left(w\in\left(\mbox{range}\sqrt{T^*T}\right)^\perp\right),S:=S_1u+S_2v$$
+Trivially, $S$ is an isometry that satisfies $S\sqrt{T^*T}=T$
+\subsubsection{Singular Value Decomposition}
+\textbf{Definition: Singular Value} of $T\in\mathcal{L}$ are eigenvalues of $\sqrt{T^*T}$ repeated dim$E\left(\lambda,\sqrt{T^*T}\right)$ times\\
+\textbf{Theorem: }\\
+$\forall T\in\mathcal{L}(V)$ with singular values $s_1,\dots,s_n$ corresponding to orthonormal bases $e_1,\dots,e_n,\exists$ orthonormal bases $f_1,\dots,f_n$ of $V\st\forall v\in V:Tv=s_1\langle v,e_1\rangle f_1+\dots+s_n\langle v,e_n\rangle f_n$\\
+\textbf{Proof:}
+$$\forall T\in\mathcal{L}(V),\exists\mbox{ isometry }S\in\mathcal{L}(V)\st S\sqrt{T^*T}=T\implies$$
+$$\forall v\in V:Tv=S\sqrt{T^*T}(\langle v,e_1\rangle e_1+\dots+\langle v,e_n\rangle e_n)=S(s_1\langle v,e_1\rangle e_1+\dots+s_n\langle v,e_n\rangle e_n)=s_1\langle v,e_1\rangle f_1+\dots+s_n\langle v,e_n\rangle f_n$$
+$$\implies\mathcal{M}(T,(e_1,\dots,e_n),(f_1,\dots,f_n))=\begin{pmatrix}
+    s_1&&0\\
+    &\ddots&\\
+    0&&s_n
+\end{pmatrix}$$
+Clearly, the singular values are non-negative square-roots of the eigenvalues of $T^*T$ repeated dim$E(\lambda,T*T)$ times
+\clearpage
+\section{Operators on Complex Vector Spaces}
+\subsection{Generalised Eigenvectors and Nilpotent Operators}
+\subsubsection{Null Spaces and Powers of an Operator}
+\textbf{Theorem:}
+$$\forall T\in\mathcal{L}(V),\forall n\in\N:\mbox{null}T^n\subset\mbox{null}T^{n+1}$$
+\textbf{Proof:}
+$$\forall v\in\mbox{null}T^k:T^kv=0\implies T^{k+1}v=T\left(T^kv\right)=T0=0\iff v\in\mbox{null}T^{k+1}\implies\mbox{null}T^k\subset\mbox{null}T^{k+1}$$
+\textbf{Theorem:}
+$$\forall T\in\mathcal{L}(V)\st\mbox{null}T^m=\mbox{null}T^{m+1}\implies\forall k\in\N:\mbox{null}T^{m+k}=\mbox{null}T^{m+k+1}$$
+\textbf{Proof:}
+$$\forall k\in\N:v\in\mbox{null}T^{m+k+1}\implies0=T^{m+k+1}v=T^{m+1}(T^kv)\implies0=T^m(T^kv)=T^{m+k}v\implies v\in\mbox{null}T^{m+k}$$
+$$\iff\mbox{null}T^{m+k+1}\subset\mbox{null}T^{m+k}$$
+The inclusion in the other direction has been proved earlier\quad$\square$\\
+\textbf{Corollary:}
+$$\forall T\in\mathcal{L}(V)\st n=\mbox{dim}V:\mbox{null}T^n=\mbox{null}T^{n+1}\dots$$
+\null\hfill{Prove as an exercise}\\
+\textbf{Corollary:}
+$$\forall T=\mathcal{L}(V):V=\mbox{null}T^{\mbox{dim}V}\oplus\mbox{range}T^{\mbox{dim}V}$$
+\textbf{Proof:}
+$$v\in\left(\mbox{null}T^{\mbox{dim}V}\right)\cap\left(\mbox{range}T^{\mbox{dim}V}\right)\implies T^{\mbox{dim}V}v=0\land\exists u\in V\st T^{\mbox{dim}V}u=v\implies T^{2\mbox{dim}V}u=T^{\mbox{dim}V}v=0$$
+$$\implies v=T^{\mbox{dim}V}u=0\quad\mbox{(null space stops growing)}\implies$$
+$$\mbox{dim}\left(\mbox{null}T^{\mbox{dim}V}\oplus\mbox{range}T^{\mbox{dim}V}\right)=\mbox{dim null}T^{\mbox{dim}V}+\mbox{dim range}T^{\mbox{dim}V}=\mbox{dim}V\quad\square$$
+\subsubsection{Generalised Eigenvectors}
+\textbf{Definition: Generalized Eigenvector}\\
+Suppose $T\in\mathcal{L}(V)$ and $\lambda$ is an eigenvalue of $T$, then
+$$v\mbox{ is a \textit{\textbf{generalised eigenvector}} of }T\iff v\in V\land\exists j\in\N^+\st (T-\lambda I)^jv=0$$
+\textbf{Definition: Generalised Eigenspace} $G(\lambda,T)$
+$$G(\lambda,T):=\{v\mid v\mbox{ is a generalised eigenvector}\}$$
+Clearly, any generalised eigenspace is a subspace, and
+$$G(\lambda,T)=\mbox{null}(T-\lambda I)^{\mbox{dim}V}$$
+\textbf{Theorem:} General eigenvectors corresponding to distinct eigenvalues are independent\\
+\textbf{Proof:}\\
+Suppose $T\in\mathcal{L}(V)$, $v_1,\dots,v_m$ is a list of eigenvectors corresponding to distinct eigenvalues $\lambda_1,\dots,\lambda_m$
+$$k:=\max\{j\mid(T-\lambda_1 I)^jv_1\neq0\},w:=(T-\lambda_1 I)^kv_1\implies0=(T-\lambda_1 I)^{k+1}v_1=(T-\lambda_1 I)w\implies Tw=\lambda_1w$$
+$$\forall a_1,\dots,a_m\in\F\st0=a_1v_1+\dots+a_mv_m:$$
+\begin{equation}
+\begin{split}
+    0&=(T-\lambda_1 I)^k(T-\lambda_2 I)^{\mbox{dim}V}\cdots(T-\lambda_m I)^{\mbox{dim}V}(a_1v_1+\dots+a_mv_m)\\    
+    &=a_1(T-\lambda_1 I)^k(T-\lambda_2 I)^{\mbox{dim}V}\cdots(T-\lambda_m I)^{\mbox{dim}V}v_1=a_1(T-\lambda_2 I)^{\mbox{dim}V}\cdots(T-\lambda_m I)^{\mbox{dim}V}w\\
+    &=a_1(\lambda_1-\lambda_2)^{\mbox{dim}V}\cdots(\lambda_1-\lambda_m)^{\mbox{dim}V}w
+\end{split}
+\end{equation}
+$\implies a_1=0,\quad$repeat the above procedure for all coefficients$\quad\square$
+\subsubsection{Nilpotent Operators}
+\textbf{Definition: Nilpotent Operator}, operator that are equal to 0 when raised to some power\\
+\textbf{Corollary:} Suppose $N\in\mathcal{L}(V)$ is nilpotent, then $N^{\mbox{dim}V}=0$\\
+\textbf{Proof:} Clearly, but in the language of generalised eigenspaces, we have
+$$\mbox{null}N^{\mbox{dim}V}=\mbox{null}(N-0I)^{\mbox{dim}V}=G(0,N)=V\implies N^{\mbox{dim}V}=0$$
+\textbf{Corollary:}\\
+For any nilpotent operator, it must have an upper-triangular matrix with 0 as in all its diagonals.\\
+\textbf{Proof:}\\
+Suppose $N\in\mathcal{L}(V)$, is nilpotent and $k$ is the smallest number $\st N^k=0$.\\
+We construct basis of $\mbox{null}N:v_1^1,\dots v_1^{n_1}$, extend it to a basis of $N^2:v_1^1,\dots,v_1^{n_1},v_2^1,\dots,v_1^{n_2}$, repeat until we have a basis of $V_1^1,\dots,v_1^{n_1},\dots,v_k^1,\dots,v_k^{n_k}$\\
+\null\hfill{Finish the proof from here}
+\subsection{Decomposition of an Operator}
+\textbf{Theorem:}\\
+Suppose $T\in\mathcal{L}(V),p\in\mathcal{P}(\F)$, then null$p(T)$ and range$p(T)$ are invariant under $T$\\
+\textbf{Proof:}
+$$v\in\mbox{null}p(T)\iff p(T)v=0\implies p(T)(Tv)=T(p(T)v)=T0=0\implies Tv\in\mbox{null}p(T)$$
+$$v\in\mbox{range}p(T)\iff\exists u\st v=p(T)u\implies Tv=T(p(T)u)=p(T)(Tu)\implies Tv\in\mbox{range}p(T)$$
+\subsubsection{Description of Operators on Complex Vector Spaces}
+\textbf{Theorem:}
+$$V=\mathbb{C}^n,T\in\mathcal{L}(V),\mbox{ let }\lambda_1,\dots,\lambda_m\mbox{ be the distince eigenvalues of }T\mbox{, then }V=G(\lambda_1,T)\oplus\cdots\oplus G(\lambda_m,T)$$
+\textbf{Proof:}\\
+The result is trivial for dim$V$=1\\
+Assuming the result $\forall W\st$dim$W<n$, suppose dim$V=n$, as any complex $V$ must have an eigenvalue:
+$$V=G(\lambda_1,T)\oplus\mbox{range}(T-\lambda_1I)^n=G(\lambda_1,T)\oplus\mbox{range }p(T)$$
+Hence, range$(T-\lambda_1I)^n$ is invariant under $T$ and dim range$(T-\lambda_1I)^n<n$, furthermore, $\lambda_2,\dots,\lambda_m$ are its eigenvalues. According to our induction hypothesis, we have: range$(T-\lambda_1I)^n=G(\lambda_2,T|_U)\oplus\cdots\oplus G(\lambda_m,T|_U)$\\
+\null\hfill{Prove $G(\lambda_j,T|_U)=G(\lambda_2,T),\,(j=2,\dots,m)$ as an exercise$\quad\square$}\\
+Clearly, for any linear operator on a complex vector spaces, there exists a basis of generalised eigenvectors.
+\subsubsection{Multiplicity of Eigenvalues}
+\textbf{Definition: Multiplicity}\\
+Suppose $T\in\mathcal{L}(V)$, the multiplicity of eigenvalue $\lambda:=\mbox{dim}G(\lambda,T)=\mbox{dim null}(T-\lambda I)^{\mbox{dim}V}$\\
+Clearly, on a complex space, the sum of multiplicity of all eigenspaces is equal to dim$V$
+\subsubsection{Block Diagonal Matrices}
+\textbf{Definition: Block Diagonal Matrix}
+$$\begin{pmatrix}
+    A_1&\cdots&0\\
+    \vdots&\ddots&\vdots\\
+    0&\cdots&A_m
+\end{pmatrix}\mbox{ where each }A_j\mbox{ is a square matrix}$$
+\textbf{Corollary:} Operators on complex vector spaces have block diagonal matrices with upper triangular blocks.\\
+\null\hfill{Prove as an exercise}
+\subsubsection{Square Roots}
+\textbf{Theorem:} Identity plus nilpotent has a square root\\
+\null\hfill{Rigorous proof with real analysis missing}\\
+\textbf{Theorem:}
+$$V=\mathbb{C}^n,T\in\mathcal{L}(V)\mbox{ is inversible}\implies\exists T^{\frac{1}{2}}$$
+\textbf{Proof:}\\
+Let $\lambda_1,\dots,\lambda_m$ be the eigenvalues of $T$, then we can decompose $T$ into identity$+$nilpotent:
+$$T|_{G(\lambda_j,T)}=\lambda_jI+\left(T|_{G(\lambda_j,T)}-\lambda_jI\right)=\lambda_j\left(I+\left(\dfrac{T|_{G(\lambda_j,T)}-\lambda_jI}{\lambda_j}\right)\right)\implies\exists R_j\st R_j^2=T|_{G(\lambda_j,T)}$$
+Repeat this for all general eigenspaces of $T$.
+$$\forall v\in V:v=v_1+\dots+v_m\st v_j\in G(\lambda_j,T),R:\mathcal{L}(V),v\mapsto R_1v_1+\dots+R_mv_m\quad\square$$
+\subsection{Characteristic and Minimal Polynomials}
+\subsubsection{The Carley-Hamilton Theorem}
+\textbf{Definition: Characteristic Polynomial}
+$V=\mathbb{C}^n,T\in\mathcal{L}(V)$ let $\lambda_1,\dots,\lambda_m$ be the eigenvalues, $d_1,\dots,d_m$ be their multiplicities, then the characteristic polynomial of $T$ is:
+$$(z-\lambda_1)^{d_1}\cdots(z-\lambda_m)^{d_m}$$
+\textbf{Cayley-Hamilton Theorem:}\\
+$V=\mathbb{C}^n,T\in\mathcal{L}(V)$, let $q$ be the characteristic polynomial of $T$, then $q(T)=\0$\\
+\null\hfill{Prove as an exercise}
+\subsubsection{The Minimal Polynomial}
+\textbf{Definition: Monic Polynomial}, polynomials whose highest degree coefficient is equal to 1\\
+\textbf{Corollary:} Unique Minimal Polynomial\\
+$\forall V=\mathbb{C}^n,T\in\mathcal{L}(V),\exists!$ lowest order monic polynomial $p\st p(T)=\0$\\
+\textbf{Proof:}\\
+Clearly, $T^0,\dots,T^{\mbox{dim}V^2}$ is not independent. Let $m$ be the smallest integer for which $T^0,\dots,T^m$ is linearly dependent$\implies\exists a_1,\dots,a_m\st0=T^0+a_1T^1+\dots+a_mT^m=p(T)=\0$\\
+To prove that $p$ is unique, suppose $q$ is a different order $m$ minimal polynomial, then $(p-q)(T)=\0\implies p-q$ is a minimal polynomial with order lower than $m$ (contradiction)$\quad\square$\\
+\textbf{Corollary:} $q\in\mathcal{P}\land q(T)=\0\iff q$ is a multiple of $p$ the minimal polynomial.\\
+\textbf{Proof:}\\
+$q(T)=\0\implies q$ has higher order than $p\implies q=sp+r\st$ the order of $r$ is lower than the of $p\implies\0=q(T)=(sp)(T)+r(T)=s(p(T))+r(T)=r(T)$ (contradiction), the other direction if trivial.\\
+\textbf{Corollary:} $\lambda$ is a zero of the minimal polynomial $p\iff\lambda$ is an eigenvalue\\
+\textbf{Proof:}\\
+$$p(\lambda)=0\implies p(z)=(z-\lambda)q(z)\iff\forall v\in V:0=p(T)v=(T-\lambda I)(q(T)v),\mbox{ degree }q<\mbox{degree }p\implies$$
+$$\exists w\neq0\st q(T)w\neq0\implies(T-\lambda I)w=0\iff\lambda\mbox{ is an eigenvalue}$$
+$$\lambda\mbox{ is an eigenvalue}\implies\exists v\in V\st v\neq0\land Tv=\lambda v\implies T^jv=\lambda^jv\,(j\in\N)$$
+$$\implies\forall v\in V:0=p(T)v=(a_0T^0+\dots+a_{m-1}T^{m-1}+T^m)v=(a_0\lambda^0+\dots+a_{m-1}\lambda^{m-1}+\lambda^m)v=p(\lambda)v\implies p(\lambda)=0$$
+\subsection{Jordan Form}
+\textbf{Theorem:}\\
+$V=\mathbb{C}^k,N\in\mathcal{L}(V)$ is nilpotent$\implies\exists$basis $\begin{pmatrix}
+    N^{m_1}u_1,\dots,N^0u_1\\
+    \vdots\\
+    N^{m_n}u_n,\dots,N^0u_n
+\end{pmatrix}$ of $V\st N^{m_1+1}u_1=\dots=N^{m_n+1}u_n=0$\\
+\textbf{Proof:}\\
+The $\mbox{dim}V=1$ case is trivial\\
+Suppose $\mbox{dim}V>1$, assume result $\forall k<\mbox{dim}V$:
+$$N\mbox{ is nilpotent}\implies N\mbox{ is not injective}\iff N\mbox{ is not surjective}\implies\mbox{range}N\mbox{ is a true invariant subspace of }V$$
+$$\implies N|_{\mbox{range}N}\in\mathcal{L}(\mbox{range}N)\implies\mbox{dim range }N\mbox{ has basis }\begin{pmatrix}
+    N^{m_1}v_1,\dots,N^0v_1\\
+    \vdots\\
+    N^{m_n}v_n,\dots,N^0v_n
+\end{pmatrix}$$
+$$\forall v_j,\exists u_j\in V\st v_j=Nu_j\implies\begin{pmatrix}
+    N^{m_1+1}u_1,\dots,N^0u_1\\
+    \vdots\\
+    N^{m_n+1}u_n,\dots,N^0u_n
+\end{pmatrix}\mbox{ is linearly independent}$$
+\null\hfill{The following sub-proof for independence should be read at the end}
+$$\begin{pmatrix}
+    0=\begin{pmatrix}
+        a_{1,1}N^{m_1+1}u_1+\dots+a_{1,m_1+2}N^0u_1\\
+        +\\
+        \vdots\\
+        +\\
+        a_{n,1}N^{m_n+1}u_n+\dots+a_{n,m_n+2}N^0u_n
+    \end{pmatrix}\implies0=N\begin{pmatrix}
+        a_{1,1}N^{m_1+1}u_1+\dots+a_{1,m_1+2}N^0u_1\\
+        +\\
+        \vdots\\
+        +\\
+        a_{n,1}N^{m_n+1}u_n+\dots+a_{n,m_n+2}N^0u_n
+    \end{pmatrix}\\
+    =\begin{pmatrix}
+        a_{1,2}N^{m_1+1}u_1+\dots+a_{1,m_1+2}Nu_1\\
+        +\\
+        \vdots\\
+        +\\
+        a_{n,2}N^{m_n+1}u_n+\dots+a_{n,m_n+2}Nu_n
+    \end{pmatrix}=\begin{pmatrix}
+        a_{1,2}N^{m_1}v_1+\dots+a_{1,m_1+2}v_1\\
+        +\\
+        \vdots\\
+        +\\
+        a_{n,2}N^{m_n}v_n+\dots+a_{n,m_n+2}v_n
+    \end{pmatrix}\implies\\
+    a_{1,2}=\dots=a_{1,m_1+2}=\dots=a_{n,2}=\dots=a_{n,m_n+2}=0\implies0=a_{1,1}N^{m_1+1}u_1+\dots+a_{n,1}N^{m_n+1}u_n\\
+    =a_{1,1}N^{m_1}v_1+\dots+a_{n,1}N^{m_n}v_n\implies a_{1,1}=\dots=a_{n,1}=0
+\end{pmatrix}$$
+We extend $\begin{pmatrix}
+    N^{m_1+1}u_1,\dots,N^0u_1\\
+    \vdots\\
+    N^{m_n+1}u_n,\dots,N^0u_n
+\end{pmatrix}$ to basis $\begin{pmatrix}
+    N^{m_1+1}u_1,\dots,N^0u_1\\
+    \vdots\\
+    N^{m_n+1}u_n,\dots,N^0u_n\\
+    w_1,\dots,w_p
+\end{pmatrix}$, $\forall w_j\,(j=1,\dots,p):Nw_j\in\mbox{range}N$
+$$\iff Nw_j\in\mbox{span}\begin{pmatrix}
+    N^{m_1}v_1,\dots,N^0v_1\\
+    \vdots\\
+    N^{m_n}v_n,\dots,N^0v_n
+\end{pmatrix}\implies\exists x_j\in\mbox{span}\begin{pmatrix}
+    N^{m_1+1}u_1,\dots,N^0u_1\\
+    \vdots\\
+    N^{m_n+1}u_n,\dots,N^0u_n
+\end{pmatrix}\st Nw_j=Nx_j$$
+$u_{n+j}:=w_j-x_j\implies Nu_{n+j}=0\implies\begin{pmatrix}
+    N^{m_1+1}u_1,\dots,N^0u_1\\
+    \vdots\\
+    N^{m_n+1}u_n,\dots,N^0u_n\\
+    u_{n+1},\dots,u_{n+p}
+\end{pmatrix}$ is a basis of $V$\\
+The last line is true as $\forall w_j\,(j=1,\dots,p):w_j=u_{n+j}+x_j$
+$$x_j\in\mbox{span}\begin{pmatrix}
+    N^{m_1+1}u_1,\dots,N^0u_1\\
+    \vdots\\
+    N^{m_n+1}u_n,\dots,N^0u_n
+\end{pmatrix}\subset\mbox{span}\begin{pmatrix}
+    N^{m_1+1}u_1,\dots,N^0u_1\\
+    \vdots\\
+    N^{m_n+1}u_n,\dots,N^0u_n\\
+    u_{n+1},\dots,u_{n+p}
+\end{pmatrix}\quad\square$$
+\textbf{Definition: Jordan From}\\
+Block diagonal matrices with each blocks in the form of: $\begin{pmatrix}
+    \lambda&1&\cdots&0\\
+    &\ddots&\ddots&\vdots\\
+    &&\ddots&1\\
+    0&&&\lambda
+\end{pmatrix}$, where the $\lambda$s are distinct eigenvalues\\
+\textbf{Theorem: Jordan Form}\\
+Any operator on a complex vector space has a matrix in the Jordan form.\\
+\null\hfill{Prove as an exercise}
+\clearpage
+\section{Operators on Real Vector Spaces}
+\subsection{Complexification}
+\subsubsection{Complexification on a Vector Space}
+\textbf{Definition: Complexification}\\
+Suppose $V=\R^n$, $V_\mathbb{C}:=\{(u,v)\mid u,v\in V\}$
+$$u+iv:=(u,v),\forall u,v,a,b\in V_\mathbb{C}:(a,b)+(u,v)=(a+u,b+v),(a,b)(u,v):=(au-bv,av+bu)$$
+We can verify that they are the same as the standard complex arithmetic.\\
+\textbf{Corollary:}\\
+$V_\mathbb{C}$ is a vector space with the same basis as $V$\\
+\null\hfill{Prove as an exercise}
+\subsubsection{Complexification on an Operator}
+\textbf{Definition:}
+$\forall u,v\in V$, the complexification of $T\in\mathcal{L}(V),T_\mathbb{C}\in\mathcal{L}(V_\mathbb{C}),u+iv\mapsto Tu+iTv$\\
+\textbf{Note:} If we think about linear maps as matrices, then applying a real operator to a is a vector would be a square matrix with real entries multiplied by a real vector. The complexification of said operator would be the same matrix multiplied by vectors with complex entries.\\
+\textbf{Corollary: }All real Operators have an invariant subspace of dimension 1 or 2\\
+\textbf{Proof:}
+$$V=\R^n,T\in\mathcal{L}(V)\implies\exists u+iv\in V_\mathbb{C}\st T_\mathbb{C}(u+iv)=(a+ib)(u+iv)\,(u+iv\neq0+i0)\implies$$
+$$Tu+iTv=(au-bv)+i(av+bu)\iff Tu=au-bv\land Tv=av+bu\implies\mbox{span}(u,v)\mbox{ is an invariant subspace}$$
+\subsubsection{The Minimal Polynomial of the Complexification}
+\textbf{Corollary:} $\forall p\in\mathcal{P}(\R):p(T_\mathbb{C})=(p(T))_\mathbb{C}$\\
+\null\hfill{Prove as an exercise}\\
+\textbf{Corollary:}\\
+Suppose $V=\R^n,T\in\mathcal{L}(V):$ the minimal polynomial of $T$ is the minimal polynomial of $T_\mathbb{C}$\\
+\textbf{Proof:}\\
+Let $p\in\mathcal{P}(\R)$ be the minimal polynomial of $T\implies p(T_\mathbb{C})=(p(T))_\mathbb{C}=\0_\mathbb{C}=\0+\0i$\\
+$$q(z):=z^m+(a_{m-1}+ib_{m-1})z^{m-1}+\dots+(a_0+ib_0)z^0$$
+$$=\left(z^m+a_{m-1}z^{m-1}+\dots+a_0z^0\right)+i\left(b_{m-1}z^{m-1}+\dots+b_0z^0\right)\in\mathcal{P}(\mathbb{C})\st q(T_\mathbb{C})=\0+i\0$$
+$$\implies\forall u\in V:\left(z^m+a_{m-1}z^{m-1}+\dots+a_0z^0\right)(u)=0\implies m=\mbox{degree }q>\mbox{degree }p$$
+\subsubsection{Eigenvalues of Complexification}
+\textbf{Theorem:} $V=\R^n,T\in\mathcal{L}(V),\lambda\in\R:\lambda$ is an eigenvalue of $T\iff\lambda$ is an eigenvalue of $T_\mathbb{C}$\\
+\textbf{Proof1:}\\
+$\lambda$ is an eigenvalue of $T\implies\exists v\in V\st v\neq0\land Tv=\lambda v\implies T_\mathbb{C}(v+i0)=\lambda v+i0=\lambda(v+i0)$\\
+$\lambda$ is an eigenvalue of $T_\mathbb{C}\implies u,v\in V\st u+iv\neq 0+i0\land T_\mathbb{C}(u+iv)=\lambda(u+iv)\implies Tu=\lambda u\land Tv=\lambda v$\\
+\textbf{Proof2:}\\
+The real eigenvalues of $T$ and $T_\mathbb{C}$ are the real 0s of their minimal polynomial.$\quad\square$\\
+\textbf{Theorem:} $V=\R^n,T\in\mathcal{L}(V),\lambda\in\mathbb{C},j\in\N,u,v\in V:(T_\mathbb{C}-\lambda I)^j(u+iv)=0+i0\iff(T_\mathbb{C}-\overline{\lambda}I)^j(u-iv)=0+i0$\\
+\textbf{Proof:}\\
+The result is trivial for $j=0$\\
+Suppose $j\geq1\land$ the result holds for $j-1$, let $\lambda=a+ib$
+$$0+i0=(T_\mathbb{C}-\lambda I)^j(u+iv)=(T_\mathbb{C}-\lambda I)^{j-1}((T_\mathbb{C}-\lambda I)(u+iv))=(T_\mathbb{C}-\lambda I)^{j-1}((Tu-au+bv)+i(Tv-av-bu))$$
+$$\iff 0+i0=(T_\mathbb{C}-\overline{\lambda}I)^{j-1}((Tu-au+bv)-i(Tv-av-bu))=(T_\mathbb{C}-\overline{\lambda}I)^{j-1}((T_\mathbb{C}-\overline{\lambda}I)(u-iv))=(T_\mathbb{C}-\overline{\lambda}I)^j(u-iv)$$
+\textbf{Corollary:}\\
+$V=\R^n,T\in\mathcal{L}(V),\lambda\in\R:\lambda$ is an eigenvalue of $T_\mathbb{C}\iff\overline{\lambda}$ is an eigenvalue of $T_\mathbb{C}\land\lambda,\overline{\lambda}$ have the same multiplicity\\
+\null\hfill{Prove as an exercise}\\
+Hence trivially, operators on odd-dimensional vector spaces have eigenvalues.
+\subsubsection{Charactoristic Polynomial of the Complexification}
+\textbf{Corollary:} Coefficients of the Characteristic polynomial of $T_\mathbb{C}$ are real (Clearly)\\
+\textbf{Definition: Characteristic polynomial} of a real operator is the corresponding characteristic polynomial of its complexification.\\
+\textbf{Properties: Characteristic Polynomial} $p$ of $T\in\mathcal{L}(V)\,(V=\R^n)$
+\begin{itemize}
+    \item all coefficients of $p$ are real (Clearly)
+    \item degree $p=$ dim$V_\mathbb{C}=$ dim$V$
+    \item the eigenvalues of $T$ are the real eigenvalues of $T_\mathbb{C}$, which are the real 0s of $p$
+\end{itemize}
+\textbf{Cayley-Hamilton Theorem:} $V=\R^n,T\in\mathcal{L}(V),q$ is the characteristic polynomial of $T$, then $q(T)=0$\\
+\textbf{Proof:} $q(T_\mathbb{C})=\0\iff q(T)=\0\quad\square$\\
+\textbf{Corollary: The Characteristic polynomial of is a multiple of the minimal polynomial}\\
+\null\hfill{Prove as an exercise}
+\subsection{Operators on Real Inner Product Spaces}
+\subsubsection{Normal Operators on Real Inner Product Spaces}
+\textbf{Corollary: }$T\in\mathcal{L}(\R^2)$, then the following are equivalent
+\begin{equation}
+\begin{split}
+    (1)\,&T\mbox{ is normal and not self-adjoint}\\
+    (2)\,&\mathcal{M}(T,\forall\mbox{ orthonormal basis})=\begin{pmatrix}
+        a&-b\\
+        b&a
+    \end{pmatrix}\st a,b\in\R\land b\neq0\\
+    (3)\,&\mathcal{M}(T,\mbox{some orthonormal basis})=\begin{pmatrix}
+        a&-b\\
+        b&a
+    \end{pmatrix}\st a,b\in\R\land b>0
+\end{split}
+\end{equation}
+\null\hfill{Prove as an exercise}\\
+\textbf{Corollary:}\\
+$V=\F^n,T\in\mathcal{L}(V),TT^*=T^*T,U\mbox{ is invariant under }T\implies$
+\begin{equation}
+\begin{split}
+    (a)\,&U^\perp\mbox{ is invariant under }T\\
+    (b)\,&U,U^\perp\mbox{ are invariant under}T^*\\
+    (c)\,&(T|_U)^*=(T^*)|_U\\
+    (d)\,&T|_U\in\mathcal{L}(U),T|_{U^\perp}\in\mathcal{L}(U^\perp)\mbox{ are normal}
+\end{split}
+\end{equation}
+\textbf{Proof:}
+\begin{equation}
+\begin{split}
+    (a)\,&\mbox{Let }e_1,\dots,e_m\mbox{ be a basis of }U,f_1,\dots,f_n\mbox{ be a basis of }U^\perp\mbox{, then}\\
+    &\mathcal{M}(T)=\begin{pmatrix}
+        A&B\\
+        0&C
+    \end{pmatrix}\mbox{ where }A=\mathcal{M}(T|_U,(e_1,\dots,e_m)),B\mbox{ is a square matrix with basis }f_1,\dots,f_n\\
+    &\mbox{Trivially, }C=0\mbox{ as }||Te_j||^2=||T^*e_j||^2\,(j=1,\dots,m)\\
+    (b)\,&\mbox{Trivially follows from (a)}\\
+    (c)\,&\mbox{Trivially follows from }(a)\mbox{ and }(b)\\
+    (d)\,&\mbox{Trivially follows}
+\end{split}
+\end{equation}
+\textbf{Theorem:}\\
+$T$ is normal$\iff$
+$T$ has a block diagonal matrix with $1\times1$ blocks or $2\times2$ blocks in the form of $\begin{pmatrix}
+    a&-b\\
+    b&a
+\end{pmatrix}\st b>0$ with respect to some orthonormal basis\\
+\textbf{Proof:}\\
+The dim$V$=1,2 cases are trivial\\
+Suppose dim$V>2$ and the result holds for any smaller dimensions. As the operator must have a 1 or 2 dimensional invariant subspace\\
+\null\hfill{Finish the proof as an exercise}
+\subsubsection{Isometries on Real Inner Product Spaces}
+\textbf{Theorem:}\\
+$S$ is an isometry$\iff S$ had a has a block diagonal matrix with $1\times1$ blocks of 1 or -1 or $2\times2$ blocks in the form of $\begin{pmatrix}
+    \cos\theta&-\sin\theta\\
+    \sin\theta&\cos\theta
+\end{pmatrix}\st\theta\in(0,\pi)$\\
+\null\hfill{Prove as an exercise}
+\clearpage
+\section{Trace and Determinant}
+\subsection{Trace}
+\subsection{Determinant}
+\end{document}
